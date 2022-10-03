@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Button from './components/button'
 // What's the difference between the two?
 // import { Button } from './components/Button'
-import './App.css'
+import 'node:./App.css'
 
 function App() {
   const initialState = {
