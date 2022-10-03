@@ -3,9 +3,14 @@ name: Deploy static content to Pages
 on:
   pull_request:
     types: closed
+    branches:
+      - main
 
   push:
-    branches: main
+    branches:
+      - main
+
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -32,26 +37,26 @@ jobs:
       - name: 🔍 Run tests
         run: npm test --if-present
 
-  lint:
+lint:
     name: Code standards
     runs-on: ubuntu-latest
 
     steps:
-      - name: '☁️ checkout repository'
+      - name: "☁️ checkout repository"
         uses: actions/checkout@v2
 
-      - name: '🔧 setup node'
+      - name: "🔧 setup node"
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16
 
-      - name: '🔧 install npm@latest'
+      - name: "🔧 install npm@latest"
         run: npm i -g npm@latest
 
-      - name: '📦 install dependencies'
+      - name: "📦 install dependencies"
         uses: bahmutov/npm-install@v1
 
-      - name: '🔍 lint code'
+      - name: "🔍 lint code"
         run: npm run lint --if-present
 
   deploy:
