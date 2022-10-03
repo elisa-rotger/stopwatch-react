@@ -26,13 +26,20 @@ jobs:
         with:
           node-version: 16
 
-      - name: 🔧 Install npm@latest and build
-        run: |
-          npm install
-          npm run build
+      - name: 🔧 Install npm@latest
+        run: npm install
+
+      - name: Build project
+        run: npm run build
 
       - name: 🔍 Run tests
         run: npm test --if-present
+
+      # - name: Upload production-ready build files
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: production-files
+      #     path: './dist'
 
   lint:
     name: Code standards
