@@ -15,8 +15,6 @@ permissions:
 defaults:
   run:
     working-directory: stopwatch-react
-  uses:
-    working-directory: stopwatch-react
 
 jobs:
   build_and_test:
