@@ -6,7 +6,12 @@ function Button(props) {
   }
 
   return (
-    <button id={props.id} className={props?.buttonStatus[props?.isRunning].className} onClick={toggleTimer}>
+    <button
+      data-testid={'test-button'}
+      id={props.id}
+      className={props?.buttonStatus[props?.isRunning].className}
+      onClick={toggleTimer}
+    >
       {props?.buttonStatus[props?.isRunning].innerText}
     </button>
   )

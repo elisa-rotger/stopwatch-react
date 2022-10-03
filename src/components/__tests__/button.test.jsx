@@ -1,23 +1,26 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import Button from './../button'
+import * as ReactDOM from 'react-dom/client'
+import { render, screen, cleanup } from '@testing-library/react'
+import '@testing-library/jest-dom'
+import Button from '../button'
 
 // TODO: Write tests for the button
 
 // 1. Render with no crashes: needs props to work
-it('renders without crashing', () => {
-  const div = document.createElement('div')
-  ReactDOM.render(
+test('Button renders without crashing', () => {
+  let myButton = (
     <Button
-      id={'test-button'}
       isRunning={true}
       buttonStatus={{
         true: { innerText: 'Something to test true', className: 'active-reset' },
         false: { innerText: 'Trying to test false', className: 'active-reset' },
       }}
-    ></Button>,
-    div,
+    ></Button>
   )
+  render(myButton)
+
+  const testButton = screen.getByTestId('test-button')
+  expect(testButton).toBeInTheDocument()
 })
 
 // 2. Expected values when passing certain props
