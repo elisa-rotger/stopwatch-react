@@ -15,6 +15,8 @@ permissions:
 defaults:
   run:
     working-directory: stopwatch-react
+  uses:
+    working-directory: stopwatch-react
 
 jobs:
   build_and_test:
@@ -24,13 +26,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        working-directory: stopwatch-react
 
       - name: 🔧 Setup node
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16
-        working-directory: stopwatch-react
 
       - name: 🔧 Install npm@latest
         run: npm install
@@ -46,7 +46,6 @@ jobs:
         with:
           name: production-files
           path: './dist'
-        working-directory: stopwatch-react
 
   # lint:
   #   name: Code standards
@@ -69,11 +68,9 @@ jobs:
         with:
           name: production-files
           path: './dist'
-        working-directory: stopwatch-react
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: './dist'
-        working-directory: stopwatch-react
