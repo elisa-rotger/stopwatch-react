@@ -18,10 +18,10 @@
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
     ],
-    "moduleNameMapper": {
-      "^@src(.*)$": "<rootDir>/src$1",
-      "^@components(.*)$": "<rootDir>/src/components$1"
-    }
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
   },
   "dependencies": {
     "jest-environment-jsdom": "^29.1.2",

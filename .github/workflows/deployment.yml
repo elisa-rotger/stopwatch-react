@@ -42,6 +42,7 @@ jobs:
         run: npm run lint --if-present
 
   deploy:
+    name: Deployment
     needs: lint
     environment:
       name: github-pages
