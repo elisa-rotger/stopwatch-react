@@ -1,5 +1,10 @@
-on: [push]
-name: testing
+on:
+  push:
+    branches:
+      - dev
+
+name: Testing
+
 run-name: ${{ github.actor }} is doing their best
 
 jobs:
