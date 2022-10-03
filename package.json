@@ -15,6 +15,9 @@
       "^.+\\.js$": "babel-jest",
       "^.+\\.jsx$": "babel-jest"
     },
+    "moduleNameMapper": {
+      "/src/(.*)": "<rootDir>/src/$1"
+    },
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
     ]
