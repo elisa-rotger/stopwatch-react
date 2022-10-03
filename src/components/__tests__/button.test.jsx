@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import Button from 'node:./../button.jsx'
+import Button from './../button.jsx'
 
 // TODO: Write tests for the button
 
