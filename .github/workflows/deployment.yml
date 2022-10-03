@@ -12,6 +12,10 @@ permissions:
   pages: write
   id-token: write
 
+defaults:
+  run:
+    working-directory: stopwatch-react
+
 jobs:
   build_and_test:
     name: Build and test application
