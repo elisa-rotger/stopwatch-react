@@ -22,25 +22,46 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  build & test:
+    name: Build and test application
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: npm install & build
-        run: |
-          npm install
-          npm run build
+      - name: 🔧 Setup node
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16
 
-  testing:
+      - name: 🔧 Install npm@latest
+        run: npm install
+
+      - name: 🔍 Run tests
+        run: npm test --if-present
+
+lint:
+    name: Code standards
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v2
 
-      - name: Run tests with Jest
-        run: npm test
+      - name: "🔧 setup node"
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16
+
+      - name: "🔧 install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦 install dependencies"
+        uses: bahmutov/npm-install@v1
+
+      - name: "🔍 lint code"
+        run: npm run lint --if-present
 
   deploy:
     environment:
@@ -49,14 +70,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2.2
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v2.2
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v1.2
         with:
           # Upload entire repository
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v1.2
