@@ -28,8 +28,8 @@ jobs:
 
       - name: 🔧 Install npm@latest and build
         run: |
-        npm install
-        npm run build
+          npm install
+          npm run build
 
       - name: 🔍 Run tests
         run: npm test --if-present
