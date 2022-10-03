@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Button from './components/Button'
+// What's the difference between the two?
+// import { Button } from './components/Button'
 import './App.css'
 
 function App() {
@@ -15,7 +18,7 @@ function App() {
   let timerAnimationId
   let lapId
 
-  function toggleClock() {
+  function startStopTimer() {
     setStopwatchState({
       ...stopwatchState,
       isRunning: !stopwatchState.isRunning,
@@ -24,12 +27,6 @@ function App() {
 
   return (
     <div className={'App'}>
-      <div>
-        <button onClick={toggleClock}>toggle</button>
-        <p>clock is {stopwatchState.isRunning ? 'running' : 'paused'}</p>
-      </div>
-      <hr />
-
       {/* TODO: Split timer into component? */}
       <main className={'main-wrapper'}>
         <div id={'timer'} className={'crontab'}>
@@ -38,18 +35,30 @@ function App() {
         {/* TODO: Divide this into button components */}
         <section className={'buttons-container'}>
           <div className={'button-wrapper'}>
-            <button id={'lap-reset'} className={'active-reset'}>
-              {stopwatchState.isRunning ? 'Lap' : 'Reset'}
-            </button>
+            <Button
+              id={'lap-reset'}
+              isRunning={stopwatchState.isRunning}
+              startStopTimer={startStopTimer}
+              buttonStatus={{
+                true: { innerText: 'Lap', className: 'active-reset' },
+                false: { innerText: 'Reset', className: 'active-reset' },
+              }}
+            ></Button>
           </div>
           <div className={'circle-wrapper'}>
             <div className={'circle'}></div>
             <div className={'circle'}></div>
           </div>
           <div className={'button-wrapper'}>
-            <button id={'start-stop'} className={stopwatchState.isRunning ? 'active-stop' : 'active-start'}>
-              {stopwatchState.isRunning ? 'Stop' : 'Start'}
-            </button>
+            <Button
+              id={'start-stop'}
+              isRunning={stopwatchState.isRunning}
+              startStopTimer={startStopTimer}
+              buttonStatus={{
+                true: { innerText: 'Stop', className: 'active-stop' },
+                false: { innerText: 'Start', className: 'active-start' },
+              }}
+            ></Button>
           </div>
         </section>
         {/* TODO: Divide lap table into components */}
