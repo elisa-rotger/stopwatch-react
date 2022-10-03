@@ -12,29 +12,29 @@ permissions:
   pages: write
   id-token: write
 
-defaults:
-  run:
-    working-directory: stopwatch-react
-
 jobs:
   build_and_test:
     name: Build and test application
     runs-on: ubuntu-latest
+    env:
+      working-directory: stopwatch-react
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       - name: 🔧 Setup node
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@master
         with:
           node-version: 16
 
       - name: 🔧 Install npm@latest
         run: npm install
+        working-directory: ${{env.working-directory}}
 
       - name: Build project
         run: npm run build
+        working-directory: ${{env.working-directory}}
 
       # - name: 🔍 Run tests
       #   run: npm test --if-present
