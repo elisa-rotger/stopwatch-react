@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Button from './components/Button'
+import Button from './components/button'
 // What's the difference between the two?
 // import { Button } from './components/Button'
 import './App.css'
@@ -27,12 +27,11 @@ function App() {
 
   return (
     <div className={'App'}>
-      {/* TODO: Split timer into component? */}
+      {/* TODO: Split timer into component */}
       <main className={'main-wrapper'}>
         <div id={'timer'} className={'crontab'}>
           <time>00:00.00</time>
         </div>
-        {/* TODO: Divide this into button components */}
         <section className={'buttons-container'}>
           <div className={'button-wrapper'}>
             <Button
