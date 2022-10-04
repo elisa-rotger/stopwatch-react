@@ -32,17 +32,19 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
+          pwd
         # working-directory: ${{env.working-directory}}
 
       # - name: 🔍 Run tests
       #   run: npm test --if-present
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v2
-        with:
-          name: production-files
-          path: './dist'
+      # - name: Upload production-ready build files
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: production-files
+      #     path: './dist'
 
   # lint:
   #   name: Code standards
@@ -59,14 +61,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: production-files
-          path: './dist'
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: production-files
+      #     path: './dist'
 
-      - name: Deploy to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: './dist'
+      # - name: Deploy to Github Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: './dist'
+
+      - name: Deploy to gh Pages
+        run: bash path/script.sh
