@@ -14,15 +14,11 @@ permissions: write-all
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: write-all
 
     strategy:
       matrix:
         node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    # defaults:
-    #   run:
-    #     working-directory: /stopwatch-react/
 
     steps:
       - uses: actions/checkout@v2
@@ -39,12 +35,6 @@ jobs:
       - run: npm run build --if-present
 
       # - run: npm test
-
-      # - name: Deploy
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: ./dist
 
       - name: Deploy
         run: bash ./deploy.sh
