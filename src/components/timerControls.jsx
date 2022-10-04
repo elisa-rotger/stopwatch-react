@@ -1,35 +1,17 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
 import { interval } from 'rxjs'
 import Button from './button'
 
-function ButtonDisplay() {
-  const initialState = {
-    startTime: 0,
-    elapsedTime: 0,
-    lapTotalTime: 0,
-    highestLap: { id: undefined, interval: 0 },
-    lowestLap: { id: undefined, interval: Infinity },
-    laps: [],
-    isRunning: false,
-  }
-
-  const [stopwatchState, setStopwatchState] = useState(initialState)
-
+function ButtonDisplay(props) {
   function startTimer() {
-    setStopwatchState({
-      ...stopwatchState,
-      isRunning: true,
-    })
-
-    const source = interval(1000)
+    const source = interval(10)
     source.subscribe((value) => {
-      console.log(value)
+      props.handleTime(value)
     })
   }
 
   function startStopTimer() {
-    if (stopwatchState.isRunning) {
+    if (props.isRunning) {
       // TODO: Pause timer function
     } else {
       startTimer()
@@ -37,7 +19,7 @@ function ButtonDisplay() {
   }
 
   function lapReset() {
-    if (stopwatchState.isRunning) {
+    if (props.isRunning) {
       // TODO: Record lap function
     } else {
       // TODO: Reset timer function
@@ -50,7 +32,7 @@ function ButtonDisplay() {
         <Button
           id={'lap-reset'}
           handleClick={lapReset}
-          isRunning={stopwatchState.isRunning}
+          isRunning={props.isRunning}
           buttonStatus={{
             true: { innerText: 'Lap', className: 'active-reset' },
             false: { innerText: 'Reset', className: 'active-reset' },
@@ -64,7 +46,7 @@ function ButtonDisplay() {
       <div className={'button-wrapper'}>
         <Button
           id={'start-stop'}
-          isRunning={stopwatchState.isRunning}
+          isRunning={props.isRunning}
           handleClick={startStopTimer}
           buttonStatus={{
             true: { innerText: 'Stop', className: 'active-stop' },

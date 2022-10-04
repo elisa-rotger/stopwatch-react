@@ -1,20 +1,28 @@
-import ButtonDisplay from './components/timerControls'
+import { useState } from 'react'
+import { getFormattedTime } from './assets/utils'
+import TimerControls from './components/timerControls'
 import './App.css'
 
 function App() {
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
+
+  function handleTimeDisplay(passedTime) {
+    setElapsedTime(passedTime)
+    setIsRunning(true)
+  }
+
   return (
     <div className={'App'}>
       <main className={'main-wrapper'}>
         {/* TODO: Split timer into component */}
         <div id={'timer'} className={'crontab'}>
-          <time>00:00.00</time>
+          <time>{getFormattedTime(elapsedTime)}</time>
         </div>
 
-        {/* <div>{subscribe}</div> */}
+        <TimerControls isRunning={isRunning} handleTime={(passedTime) => handleTimeDisplay(passedTime)} />
 
-        <ButtonDisplay />
-
-        {/* TODO: Divide lap table into components */}
+        {/* TODO: Split lap table into component */}
         <section className={'lap-container'}>
           <table className={'lap-table'}>
             <tbody id={'lap-list'}></tbody>
