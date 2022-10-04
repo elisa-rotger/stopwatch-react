@@ -5,9 +5,9 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   // root: '/Users/elisa.rotger/Documents/Workspace/Projects/stopwatch-react/',
-  base: '/stopwatch-react/stopwatch-react/',
+  base: './',
   plugins: [react()],
-  resolve: {
-    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
-  },
+  // resolve: {
+  //   alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+  // },
 })

@@ -11,6 +11,12 @@
         "trailingComma": "all"
       }
     ],
+    "overrides": [
+      {
+        "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+        "extends": ["plugin:testing-library/react"]
+      }
+    ],
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
   }
