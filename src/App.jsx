@@ -1,6 +1,6 @@
 import { useState } from 'react'
 // import Button from '@/components/button'
-import Button from './components/Button'
+import ButtonDisplay from './components/buttonDisplay'
 import './App.css'
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
     isRunning: false,
   }
   const [stopwatchState, setStopwatchState] = useState(initialState)
-  let timerAnimationId
-  let lapId
+  // let timerAnimationId
+  // let lapId
 
   function startStopTimer() {
     setStopwatchState({
@@ -26,39 +26,14 @@ function App() {
 
   return (
     <div className={'App'}>
-      {/* TODO: Split timer into component */}
       <main className={'main-wrapper'}>
+        {/* TODO: Split timer into component */}
         <div id={'timer'} className={'crontab'}>
           <time>00:00.00</time>
         </div>
-        <section className={'buttons-container'}>
-          <div className={'button-wrapper'}>
-            <Button
-              id={'lap-reset'}
-              isRunning={stopwatchState.isRunning}
-              startStopTimer={startStopTimer}
-              buttonStatus={{
-                true: { innerText: 'Lap', className: 'active-reset' },
-                false: { innerText: 'Reset', className: 'active-reset' },
-              }}
-            ></Button>
-          </div>
-          <div className={'circle-wrapper'}>
-            <div className={'circle'}></div>
-            <div className={'circle'}></div>
-          </div>
-          <div className={'button-wrapper'}>
-            <Button
-              id={'start-stop'}
-              isRunning={stopwatchState.isRunning}
-              startStopTimer={startStopTimer}
-              buttonStatus={{
-                true: { innerText: 'Stop', className: 'active-stop' },
-                false: { innerText: 'Start', className: 'active-start' },
-              }}
-            ></Button>
-          </div>
-        </section>
+
+        <ButtonDisplay isRunning={stopwatchState.isRunning} startStopTimer={startStopTimer} />
+
         {/* TODO: Divide lap table into components */}
         <section className={'lap-container'}>
           <table className={'lap-table'}>
