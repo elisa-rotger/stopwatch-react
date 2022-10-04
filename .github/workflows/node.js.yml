@@ -26,20 +26,41 @@ jobs:
           token: ${{ secrets.DEPLOY_TOKEN }}
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: npm ci
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
 
-      - run: npm run build --if-present
+      - name: Build
+        run: npm run build --if-present
 
-      # - run: npm test
+      # - name: Test
+      #   run: npm test
+
+      - name: Upload prod-ready files
+        uses: actions/upload-artifact@v2
+        with:
+          name: production-files
+          path: ./dist
 
       # - name: Deploy
       #   run: bash ./deploy.sh
 
-      - name: Deploy
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: production-files
+          path: ./dist
+
+      - name: Deploy to GH Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
