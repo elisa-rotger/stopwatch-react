@@ -57,7 +57,6 @@ jobs:
     name: Deployment
     needs: build_and_test
     runs-on: ubuntu-latest
-    if: github.ref == 'refts/heads/main'
 
     steps:
       - name: Download artifact
