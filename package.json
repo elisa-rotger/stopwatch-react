@@ -17,6 +17,9 @@
     },
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
+    ],
+    "modulePaths": [
+      "stopwatch-react/src/"
     ]
   },
   "dependencies": {
