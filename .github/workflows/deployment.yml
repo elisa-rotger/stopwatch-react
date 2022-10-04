@@ -33,7 +33,7 @@ jobs:
 
       - name: Build project
         run: npm run build
-        working-directory: ${{env.working-directory}}
+        # working-directory: ${{env.working-directory}}
 
       # - name: 🔍 Run tests
       #   run: npm test --if-present
