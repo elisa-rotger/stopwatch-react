@@ -100,7 +100,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: babel - jest,
+  // preset: undefined,
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -121,7 +121,7 @@ export default {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  // rootDir: undefined,
+  rootDir: '../stopwatch-react/',
 
   // A list of paths to directories that Jest should use to search for files in
   roots: ['./src', './node_modules'],
