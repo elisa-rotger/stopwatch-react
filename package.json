@@ -23,15 +23,17 @@
       "jsx"
     ],
     "moduleDirectories": [
-      "node_modules",
-      "src"
+      "node_modules"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
     ],
     "modulePaths": [
       "<rootDir>"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "dependencies": {
     "jest-environment-jsdom": "^29.1.2",
