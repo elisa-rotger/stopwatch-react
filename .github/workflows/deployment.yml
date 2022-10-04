@@ -30,7 +30,6 @@ jobs:
 
       - name: 🔧 Install npm@latest
         run: npm install
-        working-directory: ${{env.working-directory}}
 
       - name: Build project
         run: npm run build
