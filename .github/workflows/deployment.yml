@@ -51,14 +51,13 @@ jobs:
         run: ls
 
   deploy:
-    name: Deploy
+    name: Deploy to GH Pages
     needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: check
         run: ls -la
-        working-directory: ${{ github.workspace }}/tmp
 
       - name: Download artifact
         uses: actions/download-artifact@v2
