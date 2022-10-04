@@ -13,6 +13,7 @@ permissions: write-all
 
 jobs:
   build:
+  name: Build
     runs-on: ubuntu-latest
     permissions: write-all
 
@@ -21,11 +22,12 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
@@ -45,8 +47,8 @@ jobs:
           name: production-files
           path: ./dist
 
-      # - name: Deploy
-      #   run: bash ./deploy.sh
+      - name: Check current files
+        run: ls
 
   deploy:
     name: Deploy
