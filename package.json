@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/core": "^7.19.3",
@@ -35,6 +36,7 @@
     "prettier": "2.7.1",
     "react-test-renderer": "^18.2.0",
     "typescript": "^4.8.4",
-    "vite": "^3.1.0"
+    "vite": "^3.1.0",
+    "husky": "^8.0.0"
   }
 }
