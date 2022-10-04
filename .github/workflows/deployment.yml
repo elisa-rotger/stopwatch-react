@@ -38,8 +38,8 @@ jobs:
       - name: Build
         run: npm run build --if-present
 
-      # - name: Test
-      #   run: npm test
+      - name: Test
+        run: npm test
 
       - name: Upload prod-ready files
         uses: actions/upload-artifact@v2
@@ -47,18 +47,12 @@ jobs:
           name: production-files
           path: ./dist
 
-      - name: Check current files
-        run: ls
-
   deploy:
     name: Deploy to GH Pages
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: check
-        run: ls -la
-
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
