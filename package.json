@@ -11,6 +11,17 @@
     "prepare": "husky install",
     "lint": "eslint '**/*.jsx'"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.jsx": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@babel/core": "^7.19.3",
     "jest-environment-jsdom": "^29.1.2",
