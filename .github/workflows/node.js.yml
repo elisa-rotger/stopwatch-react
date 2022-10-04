@@ -26,7 +26,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: '/stopwatch-react/'
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
