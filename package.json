@@ -22,8 +22,9 @@
       "node_modules",
       "src"
     ],
+    "rootDir": "./",
     "modulePaths": [
-      "stopwatch-react/src/"
+      "<rootDir>"
     ]
   },
   "dependencies": {
