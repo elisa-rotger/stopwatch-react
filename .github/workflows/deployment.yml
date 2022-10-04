@@ -39,9 +39,7 @@ jobs:
         run: npm run build --if-present
 
       - name: Test
-        run: |
-          ls -la
-          npm test
+        run: npm test
 
       - name: Upload prod-ready files
         uses: actions/upload-artifact@v2
