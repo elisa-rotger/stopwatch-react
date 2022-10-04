@@ -9,18 +9,7 @@
     "preview": "vite preview",
     "test": "jest",
     "prepare": "husky install",
-    "lint": "eslint '**/*.jsx'"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.jsx": [
-      "eslint --fix",
-      "git add"
-    ]
+    "lint": "eslint '**/*.jsx' --fix"
   },
   "dependencies": {
     "@babel/core": "^7.19.3",
