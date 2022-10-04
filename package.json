@@ -9,32 +9,6 @@
     "preview": "vite preview",
     "test": "jest --coverage"
   },
-  "jest": {
-    "roots": [
-      "<rootDir>"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.js$": "babel-jest",
-      "^.+\\.jsx$": "babel-jest"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
-    ],
-    "moduleDirectories": [
-      "node_modules"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!variables/.*)"
-    ],
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    }
-  },
   "dependencies": {
     "jest-environment-jsdom": "^29.1.2",
     "react": "^18.2.0",
