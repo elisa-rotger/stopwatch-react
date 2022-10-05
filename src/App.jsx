@@ -1,15 +1,13 @@
 import { useState } from 'react'
-import TimerControls from './components/timerControls'
-import TimerDisplay from './components/timerDisplay'
+import TimerControls from './components/TimerControls'
+import TimerDisplay from './components/TimerDisplay'
 import './App.css'
 
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
 
   function handleTimeDisplay(passedTime) {
     setElapsedTime(passedTime)
-    setIsRunning(true)
   }
 
   return (
@@ -17,7 +15,7 @@ function App() {
       <main className={'main-wrapper'}>
         <TimerDisplay elapsedTime={elapsedTime} />
 
-        <TimerControls isRunning={isRunning} handleTime={(passedTime) => handleTimeDisplay(passedTime)} />
+        <TimerControls handleTime={(passedTime) => handleTimeDisplay(passedTime)} />
 
         {/* TODO: Split lap table into component */}
         <section className={'lap-container'}>

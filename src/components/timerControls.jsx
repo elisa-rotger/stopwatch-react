@@ -1,23 +1,40 @@
-import React from 'react'
-import { interval } from 'rxjs'
+import React, { useState } from 'react'
 import Button from './button'
 
+import { interval, Observable, Subscription, Subject } from 'rxjs'
+import { takeUntil, filter, repeatWhen } from 'rxjs/operators'
+
 function TimerControls(props) {
-  const { isRunning } = props
+  // const { isRunning } = props
+
+  const [intervalInstance$, setIntervalInstance$] = useState(new Subscription())
+  const [isRunning, setIsRunning] = useState(false)
+
+  // const pauseTimer$ = new Subject()
+
+  // const on$ = pauseTimer$.pipe(filter((v) => v))
+  // const off$ = pauseTimer$.pipe(filter((v) => !v))
 
   function startTimer() {
-    const source = interval(10)
-    source.subscribe((value) => {
-      props.handleTime(value)
-    })
+    setIntervalInstance$(
+      interval(10)
+        // .pipe(
+        //   takeUntil(on$),
+        //   repeatWhen(() => off$),
+        // )
+        .subscribe((value) => {
+          props.handleTime(value)
+        }),
+    )
+  }
+
+  function pauseTimer() {
+    intervalInstance$.unsubscribe()
   }
 
   function startStopTimer() {
-    if (isRunning) {
-      // TODO: Pause timer function
-    } else {
-      startTimer()
-    }
+    setIsRunning(!isRunning)
+    isRunning ? pauseTimer() : startTimer()
   }
 
   function lapReset() {
