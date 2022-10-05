@@ -2,7 +2,9 @@ import React from 'react'
 import { interval } from 'rxjs'
 import Button from './button'
 
-function ButtonDisplay(props) {
+function TimerControls(props) {
+  const { isRunning } = props
+
   function startTimer() {
     const source = interval(10)
     source.subscribe((value) => {
@@ -11,7 +13,7 @@ function ButtonDisplay(props) {
   }
 
   function startStopTimer() {
-    if (props.isRunning) {
+    if (isRunning) {
       // TODO: Pause timer function
     } else {
       startTimer()
@@ -19,7 +21,7 @@ function ButtonDisplay(props) {
   }
 
   function lapReset() {
-    if (props.isRunning) {
+    if (isRunning) {
       // TODO: Record lap function
     } else {
       // TODO: Reset timer function
@@ -32,12 +34,12 @@ function ButtonDisplay(props) {
         <Button
           id={'lap-reset'}
           handleClick={lapReset}
-          isRunning={props.isRunning}
+          isRunning={isRunning}
           buttonStatus={{
             true: { innerText: 'Lap', className: 'active-reset' },
             false: { innerText: 'Reset', className: 'active-reset' },
           }}
-        ></Button>
+        />
       </div>
       <div className={'circle-wrapper'}>
         <div className={'circle'}></div>
@@ -46,16 +48,16 @@ function ButtonDisplay(props) {
       <div className={'button-wrapper'}>
         <Button
           id={'start-stop'}
-          isRunning={props.isRunning}
+          isRunning={isRunning}
           handleClick={startStopTimer}
           buttonStatus={{
             true: { innerText: 'Stop', className: 'active-stop' },
             false: { innerText: 'Start', className: 'active-start' },
           }}
-        ></Button>
+        />
       </div>
     </section>
   )
 }
 
-export default ButtonDisplay
+export default TimerControls
