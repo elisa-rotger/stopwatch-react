@@ -27,7 +27,7 @@ function ButtonDisplay(props) {
   }
 
   return (
-    <section className={'buttons-container'}>
+    <section className={'buttons-container'} data-testid={'test-controls'}>
       <div className={'button-wrapper'}>
         <Button
           id={'lap-reset'}
