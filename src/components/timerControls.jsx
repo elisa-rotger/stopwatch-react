@@ -33,12 +33,12 @@ function TimerControls(props) {
       <div className={'button-wrapper'}>
         <Button
           id={'lap-reset'}
-          handleClick={lapReset}
           isRunning={isRunning}
           buttonStatus={{
             true: { innerText: 'Lap', className: 'active-reset' },
             false: { innerText: 'Reset', className: 'active-reset' },
           }}
+          handleClick={lapReset}
         />
       </div>
       <div className={'circle-wrapper'}>
@@ -49,11 +49,11 @@ function TimerControls(props) {
         <Button
           id={'start-stop'}
           isRunning={isRunning}
-          handleClick={startStopTimer}
           buttonStatus={{
             true: { innerText: 'Stop', className: 'active-stop' },
             false: { innerText: 'Start', className: 'active-start' },
           }}
+          handleClick={startStopTimer}
         />
       </div>
     </section>
