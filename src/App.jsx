@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { getFormattedTime } from './assets/utils'
 import TimerControls from './components/timerControls'
+import TimerDisplay from './components/timerDisplay'
 import './App.css'
 
 function App() {
@@ -15,10 +15,7 @@ function App() {
   return (
     <div className={'App'}>
       <main className={'main-wrapper'}>
-        {/* TODO: Split timer into component */}
-        <div id={'timer'} className={'crontab'}>
-          <time>{getFormattedTime(elapsedTime)}</time>
-        </div>
+        <TimerDisplay elapsedTime={elapsedTime} />
 
         <TimerControls isRunning={isRunning} handleTime={(passedTime) => handleTimeDisplay(passedTime)} />
 
