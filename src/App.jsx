@@ -12,8 +12,8 @@ function App() {
 
   function addLap() {
     setAllLaps((prevLaps) => [
-      ...prevLaps,
       { id: lapId, interval: elapsedTime - lapTotalTime },
+      ...prevLaps,
     ])
     setLapId((prevId) => prevId + 1)
     setLapTotalTime(elapsedTime)

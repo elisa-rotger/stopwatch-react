@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import Button from './button'
 
 import { interval, Subscription, Subject, NEVER } from 'rxjs'

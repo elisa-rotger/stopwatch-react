@@ -10,7 +10,7 @@ function LapControls(props) {
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
           {allLaps &&
-            allLaps.reverse().map((lap) => (
+            allLaps.map((lap) => (
               // TODO: Split into lap component?
               <tr key={lap.id} id={lap.id} className={'lap'}>
                 <td>{`Lap ${lap.id}`}</td>
