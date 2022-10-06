@@ -1,70 +1,42 @@
 import { useState } from 'react'
-// import Button from '@/components/button'
-import Button from './components/Button'
+import TimerControls from './components/TimerControls'
+import TimerDisplay from './components/TimerDisplay'
+import LapsDisplay from './components/Laps/LapsDisplay'
 import './App.css'
 
 function App() {
-  const initialState = {
-    startTime: 0,
-    elapsedTime: 0,
-    lapTotalTime: 0,
-    highestLap: { id: undefined, interval: 0 },
-    lowestLap: { id: undefined, interval: Infinity },
-    laps: [],
-    isRunning: false,
-  }
-  const [stopwatchState, setStopwatchState] = useState(initialState)
-  let timerAnimationId
-  let lapId
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [lapTotalTime, setLapTotalTime] = useState(0)
+  const [allLaps, setAllLaps] = useState([])
+  const [lapId, setLapId] = useState(1)
 
-  function startStopTimer() {
-    setStopwatchState({
-      ...stopwatchState,
-      isRunning: !stopwatchState.isRunning,
-    })
+  function addLap() {
+    setAllLaps((prevLaps) => [
+      ...prevLaps,
+      { id: lapId, interval: elapsedTime - lapTotalTime },
+    ])
+    setLapId((prevId) => prevId + 1)
+    setLapTotalTime(elapsedTime)
+  }
+
+  function resetLaps() {
+    setAllLaps([])
+    setLapId(1)
+    setLapTotalTime(0)
   }
 
   return (
     <div className={'App'}>
-      {/* TODO: Split timer into component */}
       <main className={'main-wrapper'}>
-        <div id={'timer'} className={'crontab'}>
-          <time>00:00.00</time>
-        </div>
-        <section className={'buttons-container'}>
-          <div className={'button-wrapper'}>
-            <Button
-              id={'lap-reset'}
-              isRunning={stopwatchState.isRunning}
-              startStopTimer={startStopTimer}
-              buttonStatus={{
-                true: { innerText: 'Lap', className: 'active-reset' },
-                false: { innerText: 'Reset', className: 'active-reset' },
-              }}
-            ></Button>
-          </div>
-          <div className={'circle-wrapper'}>
-            <div className={'circle'}></div>
-            <div className={'circle'}></div>
-          </div>
-          <div className={'button-wrapper'}>
-            <Button
-              id={'start-stop'}
-              isRunning={stopwatchState.isRunning}
-              startStopTimer={startStopTimer}
-              buttonStatus={{
-                true: { innerText: 'Stop', className: 'active-stop' },
-                false: { innerText: 'Start', className: 'active-start' },
-              }}
-            ></Button>
-          </div>
-        </section>
-        {/* TODO: Divide lap table into components */}
-        <section className={'lap-container'}>
-          <table className={'lap-table'}>
-            <tbody id={'lap-list'}></tbody>
-          </table>
-        </section>
+        <TimerDisplay elapsedTime={elapsedTime} />
+
+        <TimerControls
+          handleTime={(passedTime) => setElapsedTime(passedTime)}
+          handleLap={addLap}
+          handleReset={resetLaps}
+        />
+
+        <LapsDisplay allLaps={allLaps} />
 
         {/* TODO: Add footer */}
       </main>
