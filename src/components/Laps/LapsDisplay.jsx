@@ -3,12 +3,20 @@ import { getFormattedTime } from '../../utils/formatting-utils'
 import './LapsDisplay.css'
 
 function LapControls(props) {
-  const { allLaps } = props
+  const { allLaps, currentLapTime } = props
+  // console.log('currentlaptime: ', currentLapTime)
+  console.log('render lapsdisplay')
 
   return (
     <section className={'lap-container'}>
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
+          {currentLapTime > 0 && (
+            <tr className={'lap'}>
+              <td>{`Lap ${allLaps.length + 1}`}</td>
+              <td>{getFormattedTime(currentLapTime)}</td>
+            </tr>
+          )}
           {allLaps &&
             allLaps.map((lap) => (
               // TODO: Split into lap component?

@@ -25,6 +25,8 @@ function App() {
     setLapTotalTime(0)
   }
 
+  console.log('render app')
+
   return (
     <div className={'App'}>
       <main className={'main-wrapper'}>
@@ -36,7 +38,7 @@ function App() {
           handleReset={resetLaps}
         />
 
-        <LapsDisplay allLaps={allLaps} />
+        <LapsDisplay allLaps={allLaps} currentLapTime={elapsedTime - lapTotalTime} />
 
         {/* TODO: Add footer */}
       </main>

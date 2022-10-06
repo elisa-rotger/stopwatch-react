@@ -1,51 +1,29 @@
 import React, { useLayoutEffect, useState } from 'react'
 import Button from './button'
 
-import { interval, Subscription, Subject, NEVER } from 'rxjs'
-import { switchMap, startWith, scan, tap } from 'rxjs/operators'
+import { timer$ } from '../utils/observables'
 
 function TimerControls(props) {
   const { handleTime, handleLap, handleReset } = props
 
   const [isRunning, setIsRunning] = useState(false)
 
-  // TODO: Rename variables to ones that actually make some sense
-  const [counterSubject, setCounterSubject] = useState(new Subject())
-  const [stream, setStream] = useState(new Subscription())
-
   useLayoutEffect(() => {
-    setStream(
-      counterSubject
-        .pipe(
-          startWith({ pause: true, counterValue: 0 }),
-          scan((acc, val) => ({ ...acc, ...val })),
-          switchMap((state) =>
-            state.pause
-              ? NEVER
-              : interval(10).pipe(
-                  tap((val) => {
-                    state.counterValue += 1
-                    handleTime(state.counterValue)
-                  }),
-                ),
-          ),
-        )
-        .subscribe(),
-    )
+    const subscription = timer$.subscribe((value) => handleTime(value))
+
+    return () => subscription.unsubscribe()
   }, [])
 
   function startStopTimer() {
     setIsRunning(!isRunning)
-    isRunning
-      ? counterSubject.next({ pause: true })
-      : counterSubject.next({ pause: false })
+    isRunning ? timer$.next({ pause: true }) : timer$.next({ pause: false })
   }
 
   function lapReset() {
     if (isRunning) {
       handleLap()
     } else {
-      counterSubject.next({ counterValue: 0 })
+      timer$.next({ counterValue: 0 })
       handleTime(0)
       handleReset()
     }
