@@ -14,7 +14,7 @@
       "error",
       {
         "semi": false,
-        "printWidth": 120, // e.g for TypeScript, because of longer lines
+        "printWidth": 90, // e.g for TypeScript, because of longer lines
         "singleQuote": true,
         "trailingComma": "all"
       }

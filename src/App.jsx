@@ -6,16 +6,14 @@ import './App.css'
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
 
-  function handleTimeDisplay(passedTime) {
-    setElapsedTime(passedTime)
-  }
+  // TODO: Add lap control
 
   return (
     <div className={'App'}>
       <main className={'main-wrapper'}>
         <TimerDisplay elapsedTime={elapsedTime} />
 
-        <TimerControls handleTime={(passedTime) => handleTimeDisplay(passedTime)} />
+        <TimerControls handleTime={(passedTime) => setElapsedTime(passedTime)} />
 
         {/* TODO: Split lap table into component */}
         <section className={'lap-container'}>

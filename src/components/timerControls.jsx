@@ -1,40 +1,43 @@
-import React, { useState } from 'react'
+import React, { useLayoutEffect, useEffect, useState } from 'react'
 import Button from './button'
 
-import { interval, Observable, Subscription, Subject } from 'rxjs'
-import { takeUntil, filter, repeatWhen } from 'rxjs/operators'
+import { interval, Subscription, Subject, NEVER } from 'rxjs'
+import { switchMap, startWith, scan, tap } from 'rxjs/operators'
 
 function TimerControls(props) {
-  // const { isRunning } = props
+  const { handleTime } = props
 
-  const [intervalInstance$, setIntervalInstance$] = useState(new Subscription())
   const [isRunning, setIsRunning] = useState(false)
 
-  // const pauseTimer$ = new Subject()
+  const [counterSubject, setCounterSubject] = useState(new Subject())
+  const [stream, setStream] = useState(new Subscription())
 
-  // const on$ = pauseTimer$.pipe(filter((v) => v))
-  // const off$ = pauseTimer$.pipe(filter((v) => !v))
-
-  function startTimer() {
-    setIntervalInstance$(
-      interval(10)
-        // .pipe(
-        //   takeUntil(on$),
-        //   repeatWhen(() => off$),
-        // )
-        .subscribe((value) => {
-          props.handleTime(value)
-        }),
+  useLayoutEffect(() => {
+    setStream(
+      counterSubject
+        .pipe(
+          startWith({ pause: true, counterValue: 0 }),
+          scan((acc, val) => ({ ...acc, ...val })),
+          switchMap((state) =>
+            state.pause
+              ? NEVER
+              : interval(10).pipe(
+                  tap((val) => {
+                    state.counterValue += 1
+                    handleTime(state.counterValue)
+                  }),
+                ),
+          ),
+        )
+        .subscribe(),
     )
-  }
-
-  function pauseTimer() {
-    intervalInstance$.unsubscribe()
-  }
+  }, [])
 
   function startStopTimer() {
     setIsRunning(!isRunning)
-    isRunning ? pauseTimer() : startTimer()
+    isRunning
+      ? counterSubject.next({ pause: true })
+      : counterSubject.next({ pause: false })
   }
 
   function lapReset() {
