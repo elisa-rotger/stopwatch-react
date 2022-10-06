@@ -44,7 +44,8 @@ function TimerControls(props) {
     if (isRunning) {
       // TODO: Record lap function
     } else {
-      // TODO: Reset timer function
+      counterSubject.next({ counterValue: 0 })
+      handleTime(0)
     }
   }
 
