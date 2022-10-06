@@ -1,26 +1,42 @@
 import { useState } from 'react'
 import TimerControls from './components/TimerControls'
 import TimerDisplay from './components/TimerDisplay'
+import LapsDisplay from './components/Laps/LapsDisplay'
 import './App.css'
 
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
+  const [lapTotalTime, setLapTotalTime] = useState(0)
+  const [allLaps, setAllLaps] = useState([])
+  const [lapId, setLapId] = useState(1)
 
-  // TODO: Add lap control
+  function addLap() {
+    setAllLaps((prevLaps) => [
+      ...prevLaps,
+      { id: lapId, interval: elapsedTime - lapTotalTime },
+    ])
+    setLapId((prevId) => prevId + 1)
+    setLapTotalTime(elapsedTime)
+  }
+
+  function resetLaps() {
+    setAllLaps([])
+    setLapId(1)
+    setLapTotalTime(0)
+  }
 
   return (
     <div className={'App'}>
       <main className={'main-wrapper'}>
         <TimerDisplay elapsedTime={elapsedTime} />
 
-        <TimerControls handleTime={(passedTime) => setElapsedTime(passedTime)} />
+        <TimerControls
+          handleTime={(passedTime) => setElapsedTime(passedTime)}
+          handleLap={addLap}
+          handleReset={resetLaps}
+        />
 
-        {/* TODO: Split lap table into component */}
-        <section className={'lap-container'}>
-          <table className={'lap-table'}>
-            <tbody id={'lap-list'}></tbody>
-          </table>
-        </section>
+        <LapsDisplay allLaps={allLaps} />
 
         {/* TODO: Add footer */}
       </main>

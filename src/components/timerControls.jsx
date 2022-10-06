@@ -5,10 +5,11 @@ import { interval, Subscription, Subject, NEVER } from 'rxjs'
 import { switchMap, startWith, scan, tap } from 'rxjs/operators'
 
 function TimerControls(props) {
-  const { handleTime } = props
+  const { handleTime, handleLap, handleReset } = props
 
   const [isRunning, setIsRunning] = useState(false)
 
+  // TODO: Rename variables to ones that actually make some sense
   const [counterSubject, setCounterSubject] = useState(new Subject())
   const [stream, setStream] = useState(new Subscription())
 
@@ -42,10 +43,11 @@ function TimerControls(props) {
 
   function lapReset() {
     if (isRunning) {
-      // TODO: Record lap function
+      handleLap()
     } else {
       counterSubject.next({ counterValue: 0 })
       handleTime(0)
+      handleReset()
     }
   }
 
