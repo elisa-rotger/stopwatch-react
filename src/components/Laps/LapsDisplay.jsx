@@ -14,6 +14,8 @@ const initialHighestLowestLapsState = {
   lowestLap: { id: undefined, interval: Infinity },
 }
 
+const initialEmptyLapsState = [1, 2, 3, 4, 5, 6]
+
 function LapControls(props) {
   const { elapsedTime, lapId } = props
 
@@ -22,8 +24,9 @@ function LapControls(props) {
   const [highestLowestLaps, setHighestLowestLaps] = useState(
     initialHighestLowestLapsState,
   )
+  const [emptyLaps, setEmptyLaps] = useState(initialEmptyLapsState)
 
-  const [scroll, setScroll] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
 
   useEffect(() => {
     setLapInfo((previousLapInfo) => ({
@@ -35,6 +38,7 @@ function LapControls(props) {
   useEffect(() => {
     if (lapId === 1) {
       resetLaps()
+      setEmptyLaps(initialEmptyLapsState)
     } else {
       const newLap = { id: lapInfo.id, interval: lapInfo.interval }
       setLapTotalTime(elapsedTime)
@@ -47,6 +51,7 @@ function LapControls(props) {
         ],
       }))
       findHighestLowestLaps(newLap)
+      if (emptyLaps.length) setEmptyLaps((prevArray) => prevArray.slice(0, -1))
     }
   }, [lapId])
 
@@ -73,16 +78,16 @@ function LapControls(props) {
 
   useEffect(() => {
     document.querySelector('.lap-container').addEventListener('scroll', () => {
-      setScroll(true)
+      setIsScrolling(true)
 
-      setTimeout(() => setScroll(false), 1500)
+      setTimeout(() => setIsScrolling(false), 1500)
 
-      return () => setScroll(false)
+      return () => setIsScrolling(false)
     })
   }, [])
 
   return (
-    <section className={`lap-container ${scroll ? 'scrollbar-fade' : ''}`}>
+    <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
           {lapInfo.interval > 0 && (
@@ -108,6 +113,13 @@ function LapControls(props) {
               >
                 <td>{`Lap ${lap.id}`}</td>
                 <td>{getFormattedTime(lap.interval)}</td>
+              </tr>
+            ))}
+          {emptyLaps &&
+            emptyLaps.map((emptyLap) => (
+              <tr className={'lap'}>
+                <td></td>
+                <td></td>
               </tr>
             ))}
         </tbody>
