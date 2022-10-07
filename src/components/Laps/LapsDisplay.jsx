@@ -43,17 +43,21 @@ function LapControls(props) {
       const newLap = { id: lapInfo.id, interval: lapInfo.interval }
       setLapTotalTime(elapsedTime)
       setLapInfo((previousLapInfo) => ({
+        ...previousLapInfo,
         id: lapId,
-        interval: elapsedTime - lapTotalTime,
         allLaps: [
           { id: previousLapInfo.id, interval: previousLapInfo.interval },
           ...previousLapInfo.allLaps,
         ],
       }))
+      // its using state -> part of dependencies
       findHighestLowestLaps(newLap)
       if (emptyLaps.length) setEmptyLaps((prevArray) => prevArray.slice(0, -1))
     }
   }, [lapId])
+
+  // TODO: separate running lap vs laps array
+  // TODO: Get rid of lapId state variable, just add on to previous value -> how to tell child component to create a lap?
 
   const resetLaps = () => {
     setLapInfo(initialLapState)
@@ -86,6 +90,14 @@ function LapControls(props) {
     })
   }, [])
 
+  const getClassName = (id) => {
+    if (lapInfo.allLaps.length > 1 && highestLowestLaps.highestLap.id === id)
+      return 'highest'
+    if (lapInfo.allLaps.length > 1 && highestLowestLaps.lowestLap.id === id)
+      return 'lowest'
+    return ''
+  }
+
   return (
     <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
       <table className={'lap-table'}>
@@ -101,15 +113,7 @@ function LapControls(props) {
               <tr
                 key={lap.id}
                 id={`lap-${lap.id}`}
-                className={`lap ${
-                  lapInfo.allLaps.length > 1 && highestLowestLaps.highestLap.id === lap.id
-                    ? 'highest'
-                    : ''
-                } ${
-                  lapInfo.allLaps.length > 1 && highestLowestLaps.lowestLap.id === lap.id
-                    ? 'lowest'
-                    : ''
-                }`}
+                className={`lap ${getClassName(lap.id)}`}
               >
                 <td>{`Lap ${lap.id}`}</td>
                 <td>{getFormattedTime(lap.interval)}</td>

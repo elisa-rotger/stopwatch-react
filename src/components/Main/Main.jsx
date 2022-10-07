@@ -10,6 +10,14 @@ function Main() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [lapId, setLapId] = useState(1)
 
+  const handleTime = (passedTime) => {
+    setElapsedTime(passedTime)
+  }
+
+  const handleAddLap = () => {
+    setLapId((prevId) => prevId + 1)
+  }
+
   const reset = () => {
     setElapsedTime(0)
     setLapId(1)
@@ -19,8 +27,8 @@ function Main() {
     <main className={'main-wrapper'}>
       <TimerDisplay elapsedTime={elapsedTime} />
       <TimerControls
-        handleTime={(passedTime) => setElapsedTime(passedTime)}
-        handleLap={() => setLapId((prevId) => prevId + 1)}
+        handleTime={(passedTime) => handleTime(passedTime)}
+        handleLap={handleAddLap}
         handleReset={reset}
       />
       <LapsDisplay elapsedTime={elapsedTime} lapId={lapId} />
