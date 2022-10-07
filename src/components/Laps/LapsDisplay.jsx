@@ -6,7 +6,7 @@ import './LapsDisplay.css'
 const initialLapState = {
   id: 1,
   interval: 0,
-  allLaps: [],
+  // allLaps: [],
 }
 
 const initialHighestLowestLapsState = {
@@ -14,19 +14,23 @@ const initialHighestLowestLapsState = {
   lowestLap: { id: undefined, interval: Infinity },
 }
 
+const initialEmptyLapsState = [1, 2, 3, 4, 5, 6]
+
 function LapControls(props) {
   const { elapsedTime, lapId } = props
 
   const [lapTotalTime, setLapTotalTime] = useState(0)
-  const [lapInfo, setLapInfo] = useState(initialLapState)
+  const [runningLapInfo, setRunningLapInfo] = useState(initialLapState)
+  const [allLaps, setAllLaps] = useState([])
   const [highestLowestLaps, setHighestLowestLaps] = useState(
     initialHighestLowestLapsState,
   )
+  const [emptyLaps, setEmptyLaps] = useState(initialEmptyLapsState)
 
-  const [scroll, setScroll] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
 
   useEffect(() => {
-    setLapInfo((previousLapInfo) => ({
+    setRunningLapInfo((previousLapInfo) => ({
       ...previousLapInfo,
       interval: elapsedTime - lapTotalTime,
     }))
@@ -35,24 +39,26 @@ function LapControls(props) {
   useEffect(() => {
     if (lapId === 1) {
       resetLaps()
+      setEmptyLaps(initialEmptyLapsState)
     } else {
-      const newLap = { id: lapInfo.id, interval: lapInfo.interval }
+      const newLap = { id: runningLapInfo.id, interval: runningLapInfo.interval }
       setLapTotalTime(elapsedTime)
-      setLapInfo((previousLapInfo) => ({
-        id: lapId,
-        interval: elapsedTime - lapTotalTime,
-        allLaps: [
-          { id: previousLapInfo.id, interval: previousLapInfo.interval },
-          ...previousLapInfo.allLaps,
-        ],
+      setRunningLapInfo((previousLapInfo) => ({
+        ...previousLapInfo,
+        id: previousLapInfo.id + 1,
       }))
+      setAllLaps((prevAllLaps) => [newLap, ...prevAllLaps])
       findHighestLowestLaps(newLap)
+      if (emptyLaps.length) setEmptyLaps((prevArray) => prevArray.slice(0, -1))
     }
   }, [lapId])
 
+  // TODO: Get rid of lapId state variable, just add on to previous value -> how to tell child component to create a lap?
+
   const resetLaps = () => {
-    setLapInfo(initialLapState)
+    setRunningLapInfo(initialLapState)
     setHighestLowestLaps(initialHighestLowestLapsState)
+    setAllLaps([])
     setLapTotalTime(0)
   }
 
@@ -73,41 +79,46 @@ function LapControls(props) {
 
   useEffect(() => {
     document.querySelector('.lap-container').addEventListener('scroll', () => {
-      setScroll(true)
+      setIsScrolling(true)
 
-      setTimeout(() => setScroll(false), 1500)
+      setTimeout(() => setIsScrolling(false), 1500)
 
-      return () => setScroll(false)
+      return () => setIsScrolling(false)
     })
   }, [])
 
+  const getClassName = (id) => {
+    if (allLaps.length > 1 && highestLowestLaps.highestLap.id === id) return 'highest'
+    if (allLaps.length > 1 && highestLowestLaps.lowestLap.id === id) return 'lowest'
+    return ''
+  }
+
   return (
-    <section className={`lap-container ${scroll ? 'scrollbar-fade' : ''}`}>
+    <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
-          {lapInfo.interval > 0 && (
+          {runningLapInfo.interval > 0 && (
             <tr className={'lap'}>
-              <td>{`Lap ${lapInfo.id}`}</td>
-              <td>{getFormattedTime(lapInfo.interval)}</td>
+              <td>{`Lap ${runningLapInfo.id}`}</td>
+              <td>{getFormattedTime(runningLapInfo.interval)}</td>
             </tr>
           )}
-          {lapInfo.allLaps.length > 0 &&
-            lapInfo.allLaps.map((lap) => (
+          {allLaps.length > 0 &&
+            allLaps.map((lap) => (
               <tr
                 key={lap.id}
                 id={`lap-${lap.id}`}
-                className={`lap ${
-                  lapInfo.allLaps.length > 1 && highestLowestLaps.highestLap.id === lap.id
-                    ? 'highest'
-                    : ''
-                } ${
-                  lapInfo.allLaps.length > 1 && highestLowestLaps.lowestLap.id === lap.id
-                    ? 'lowest'
-                    : ''
-                }`}
+                className={`lap ${getClassName(lap.id)}`}
               >
                 <td>{`Lap ${lap.id}`}</td>
                 <td>{getFormattedTime(lap.interval)}</td>
+              </tr>
+            ))}
+          {emptyLaps &&
+            emptyLaps.map((emptyLap, index) => (
+              <tr key={index} className={'lap'}>
+                <td></td>
+                <td></td>
               </tr>
             ))}
         </tbody>

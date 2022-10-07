@@ -24,10 +24,11 @@
   --active-nav-icon-color: #ff9500;
 }
 
-body {
+.App {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -64,77 +65,4 @@ body {
 /* TODO: Change this to em (or rem if I end up changing it in crontab) */
 .crontab .hourly {
   font-size: 4.5vh;
-}
-
-/* Buttons */
-
-.buttons-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2%;
-}
-
-.button-wrapper {
-  padding: 19%;
-}
-
-.button-wrapper > button {
-  border: 1px solid var(--main-bg-color);
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.9em;
-  font-weight: 300;
-}
-
-.active-reset {
-  background-color: var(--grey-bg-color);
-  box-shadow: 0 0 0 1.5px var(--grey-bg-color), inset 0 0 0 1px var(--main-bg-color);
-  color: rgba(var(--main-font-color), 1);
-}
-
-.active-start {
-  background-color: var(--start-bg-color);
-  box-shadow: 0 0 0 1.5px var(--start-bg-color), inset 0 0 0 1px var(--main-bg-color);
-  color: var(--green-font-color);
-}
-
-.active-stop {
-  background-color: var(--stop-bg-button);
-  box-shadow: 0 0 0 1.5px var(--stop-bg-button), inset 0 0 0 1px var(--main-bg-color);
-  color: var(--red-font-color);
-}
-
-.active-reset:disabled {
-  background-color: var(--disabled-bg-button);
-  cursor: auto;
-}
-
-/* Lil buttons in the middle */
-
-.circle-wrapper {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 7%;
-  justify-content: center;
-  align-items: center;
-}
-
-.circle {
-  width: 7px;
-  height: 7px;
-  background-color: rgb(var(--main-font-color));
-  border-radius: 50%;
-}
-
-.circle:first-child {
-  background-color: rgb(var(--main-font-color));
-}
-
-.circle:last-child {
-  background-color: var(--grey-bg-color);
 }
