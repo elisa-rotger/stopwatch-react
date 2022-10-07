@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Button from './button'
+import Button from './Button'
 
-import { timer$ } from '../utils/observables'
+import { timer$ } from '../../utils/observables'
 
 function TimerControls(props) {
   const { handleTime, handleLap, handleReset } = props
@@ -10,18 +10,15 @@ function TimerControls(props) {
 
   useEffect(() => {
     const subscription = timer$.subscribe((value) => handleTime(value))
-    console.log('component')
 
     return () => subscription.unsubscribe()
   }, [])
 
-  // TODO: Send new isrunning value in the click function so we ont need a useeffect
-  function startStopTimer() {
-    setIsRunning(!isRunning)
-    isRunning ? timer$.next({ pause: true }) : timer$.next({ pause: false })
-  }
+  useEffect(() => {
+    isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })
+  }, [isRunning])
 
-  function lapReset() {
+  const lapReset = () => {
     if (isRunning) {
       handleLap()
     } else {
@@ -29,8 +26,6 @@ function TimerControls(props) {
       handleReset()
     }
   }
-
-  // console.log('timercontrol component')
 
   return (
     <section className={'buttons-container'} data-testid={'test-controls'}>
@@ -57,7 +52,7 @@ function TimerControls(props) {
             true: { innerText: 'Stop', className: 'active-stop' },
             false: { innerText: 'Start', className: 'active-start' },
           }}
-          handleClick={startStopTimer}
+          handleClick={() => setIsRunning(!isRunning)}
         />
       </div>
     </section>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getFormattedTime } from '../utils/formatting-utils'
+import { getFormattedTime } from '../../utils/formatting-utils'
 
 function TimerDisplay(props) {
   const { elapsedTime } = props

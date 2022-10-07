@@ -1,9 +1,7 @@
-import { useState } from 'react'
-import TimerControls from './components/TimerControls'
-import TimerDisplay from './components/TimerDisplay'
+import { useState, useEffect } from 'react'
+import TimerControls from './components/Buttons/TimerControls'
+import TimerDisplay from './components/MainTimer/TimerDisplay'
 import LapsDisplay from './components/Laps/LapsDisplay'
-import './App.css'
-import { useEffect } from 'react'
 
 const initialLapState = {
   id: 1,
@@ -17,6 +15,7 @@ const initialHighestLowestLapsState = {
 }
 
 function App() {
+  // TODO: Move laps logic to lapsDisplay component
   const [elapsedTime, setElapsedTime] = useState(0)
   const [lapTotalTime, setLapTotalTime] = useState(0)
 
@@ -26,7 +25,6 @@ function App() {
   )
   const [lapId, setLapId] = useState(1)
 
-  // TODO: Add cleanup functions?
   useEffect(() => {
     setLapInfo((previousLapInfo) => ({
       ...previousLapInfo,
@@ -50,7 +48,7 @@ function App() {
     }
   }, [lapId])
 
-  function findHighestLowestLaps(newLap) {
+  const findHighestLowestLaps = (newLap) => {
     if (newLap.interval < highestLowestLaps.lowestLap.interval) {
       sethighestLowestLaps((prev) => ({
         ...prev,
@@ -65,7 +63,7 @@ function App() {
     }
   }
 
-  function reset() {
+  const reset = () => {
     setElapsedTime(0)
     setLapTotalTime(0)
     setLapInfo(initialLapState)
