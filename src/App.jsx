@@ -1,45 +1,10 @@
-import { useState } from 'react'
-import TimerControls from './components/TimerControls'
-import TimerDisplay from './components/TimerDisplay'
-import LapsDisplay from './components/Laps/LapsDisplay'
-import './App.css'
+import React from 'react'
+import Main from './components/Main/Main'
 
 function App() {
-  const [elapsedTime, setElapsedTime] = useState(0)
-  const [lapTotalTime, setLapTotalTime] = useState(0)
-  const [allLaps, setAllLaps] = useState([])
-  const [lapId, setLapId] = useState(1)
-
-  function addLap() {
-    setAllLaps((prevLaps) => [
-      ...prevLaps,
-      { id: lapId, interval: elapsedTime - lapTotalTime },
-    ])
-    setLapId((prevId) => prevId + 1)
-    setLapTotalTime(elapsedTime)
-  }
-
-  function resetLaps() {
-    setAllLaps([])
-    setLapId(1)
-    setLapTotalTime(0)
-  }
-
   return (
     <div className={'App'}>
-      <main className={'main-wrapper'}>
-        <TimerDisplay elapsedTime={elapsedTime} />
-
-        <TimerControls
-          handleTime={(passedTime) => setElapsedTime(passedTime)}
-          handleLap={addLap}
-          handleReset={resetLaps}
-        />
-
-        <LapsDisplay allLaps={allLaps} />
-
-        {/* TODO: Add footer */}
-      </main>
+      <Main />
     </div>
   )
 }
