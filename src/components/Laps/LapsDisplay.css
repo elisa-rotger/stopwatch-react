@@ -22,8 +22,9 @@
 .lap-table {
   color: rgb(var(--main-font-color));
   width: 100%;
+  height: 100%;
   border-top: 1px solid #292929;
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
 }
 
 #lap-list tr td {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import TimerDisplay from '../MainTimer/TimerDisplay'
+import TimerDisplay from '../Timer/TimerDisplay'
 
 const VALUE_TO_TEST = 20000
 // TODO: Write tests for the timer display

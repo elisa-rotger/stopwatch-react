@@ -13,12 +13,10 @@ function LapControls(props) {
       setScroll(true)
 
       setTimeout(() => setScroll(false), 1500)
+
+      return () => setScroll(false)
     })
   }, [])
-
-  const handleScroll = () => {
-    console.log('scrolling')
-  }
 
   return (
     <section className={`lap-container ${scroll ? 'scrollbar-fade' : ''}`}>
