@@ -3,29 +3,49 @@ import TimerControls from './components/TimerControls'
 import TimerDisplay from './components/TimerDisplay'
 import LapsDisplay from './components/Laps/LapsDisplay'
 import './App.css'
+import { useEffect } from 'react'
+
+const initialLapState = {
+  id: 1,
+  interval: 0,
+  allLaps: [],
+}
 
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [lapTotalTime, setLapTotalTime] = useState(0)
-  const [allLaps, setAllLaps] = useState([])
+
+  const [lapInfo, setLapInfo] = useState(initialLapState)
   const [lapId, setLapId] = useState(1)
 
-  function addLap() {
-    setAllLaps((prevLaps) => [
-      { id: lapId, interval: elapsedTime - lapTotalTime },
-      ...prevLaps,
-    ])
-    setLapId((prevId) => prevId + 1)
-    setLapTotalTime(elapsedTime)
-  }
+  // TODO: Add cleanup functions?
+  useEffect(() => {
+    setLapInfo((previousLapInfo) => ({
+      ...previousLapInfo,
+      interval: elapsedTime - lapTotalTime,
+    }))
+  }, [elapsedTime, lapTotalTime])
 
-  function resetLaps() {
-    setAllLaps([])
-    setLapId(1)
+  useEffect(() => {
+    if (lapId !== 1) {
+      setLapInfo((previousLapInfo) => ({
+        id: lapId,
+        interval: elapsedTime - lapTotalTime,
+        allLaps: [
+          { id: previousLapInfo.id, interval: previousLapInfo.interval },
+          ...previousLapInfo.allLaps,
+        ],
+      }))
+      setLapTotalTime(elapsedTime)
+    }
+  }, [lapId])
+
+  function reset() {
+    setElapsedTime(0)
     setLapTotalTime(0)
+    setLapInfo(initialLapState)
+    setLapId(1)
   }
-
-  console.log('render app')
 
   return (
     <div className={'App'}>
@@ -34,11 +54,11 @@ function App() {
 
         <TimerControls
           handleTime={(passedTime) => setElapsedTime(passedTime)}
-          handleLap={addLap}
-          handleReset={resetLaps}
+          handleLap={() => setLapId((prevId) => prevId + 1)}
+          handleReset={reset}
         />
 
-        <LapsDisplay allLaps={allLaps} currentLapTime={elapsedTime - lapTotalTime} />
+        <LapsDisplay lapInfo={lapInfo} />
 
         {/* TODO: Add footer */}
       </main>

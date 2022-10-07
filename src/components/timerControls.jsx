@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from './button'
 
 import { timer$ } from '../utils/observables'
@@ -8,12 +8,14 @@ function TimerControls(props) {
 
   const [isRunning, setIsRunning] = useState(false)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const subscription = timer$.subscribe((value) => handleTime(value))
+    console.log('component')
 
     return () => subscription.unsubscribe()
   }, [])
 
+  // TODO: Send new isrunning value in the click function so we ont need a useeffect
   function startStopTimer() {
     setIsRunning(!isRunning)
     isRunning ? timer$.next({ pause: true }) : timer$.next({ pause: false })
@@ -23,11 +25,12 @@ function TimerControls(props) {
     if (isRunning) {
       handleLap()
     } else {
-      timer$.next({ counterValue: 0 })
-      handleTime(0)
+      timer$.next({ counter: 0 })
       handleReset()
     }
   }
+
+  // console.log('timercontrol component')
 
   return (
     <section className={'buttons-container'} data-testid={'test-controls'}>
