@@ -3,7 +3,7 @@ import { getFormattedTime } from '../../utils/formatting-utils'
 import './LapsDisplay.css'
 
 function LapControls(props) {
-  const { lapInfo } = props
+  const { lapInfo, highestLowestLaps } = props
 
   return (
     <section className={'lap-container'}>
@@ -17,7 +17,19 @@ function LapControls(props) {
           )}
           {lapInfo.allLaps.length > 0 &&
             lapInfo.allLaps.map((lap) => (
-              <tr key={lap.id} id={lap.id} className={'lap'}>
+              <tr
+                key={lap.id}
+                id={lap.id}
+                className={`lap ${
+                  lapInfo.allLaps.length > 1 && highestLowestLaps.highestLap.id === lap.id
+                    ? 'highest'
+                    : ''
+                } ${
+                  lapInfo.allLaps.length > 1 && highestLowestLaps.lowestLap.id === lap.id
+                    ? 'lowest'
+                    : ''
+                }`}
+              >
                 <td>{`Lap ${lap.id}`}</td>
                 <td>{getFormattedTime(lap.interval)}</td>
               </tr>

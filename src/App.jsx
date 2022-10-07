@@ -11,11 +11,19 @@ const initialLapState = {
   allLaps: [],
 }
 
+const initialHighestLowestLapsState = {
+  highestLap: { id: undefined, interval: 0 },
+  lowestLap: { id: undefined, interval: Infinity },
+}
+
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [lapTotalTime, setLapTotalTime] = useState(0)
 
   const [lapInfo, setLapInfo] = useState(initialLapState)
+  const [highestLowestLaps, sethighestLowestLaps] = useState(
+    initialHighestLowestLapsState,
+  )
   const [lapId, setLapId] = useState(1)
 
   // TODO: Add cleanup functions?
@@ -28,6 +36,7 @@ function App() {
 
   useEffect(() => {
     if (lapId !== 1) {
+      const newLap = { id: lapInfo.id, interval: lapInfo.interval }
       setLapInfo((previousLapInfo) => ({
         id: lapId,
         interval: elapsedTime - lapTotalTime,
@@ -37,8 +46,24 @@ function App() {
         ],
       }))
       setLapTotalTime(elapsedTime)
+      findHighestLowestLaps(newLap)
     }
   }, [lapId])
+
+  function findHighestLowestLaps(newLap) {
+    if (newLap.interval < highestLowestLaps.lowestLap.interval) {
+      sethighestLowestLaps((prev) => ({
+        ...prev,
+        lowestLap: newLap,
+      }))
+    }
+    if (newLap.interval > highestLowestLaps.highestLap.interval) {
+      sethighestLowestLaps((prev) => ({
+        ...prev,
+        highestLap: newLap,
+      }))
+    }
+  }
 
   function reset() {
     setElapsedTime(0)
@@ -58,7 +83,7 @@ function App() {
           handleReset={reset}
         />
 
-        <LapsDisplay lapInfo={lapInfo} />
+        <LapsDisplay lapInfo={lapInfo} highestLowestLaps={highestLowestLaps} />
 
         {/* TODO: Add footer */}
       </main>
