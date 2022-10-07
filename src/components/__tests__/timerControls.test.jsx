@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import TimerControls from '../timerControls'
+import TimerControls from '../Buttons/TimerControls'
 
 // TODO: Write tests for the timer controls
 

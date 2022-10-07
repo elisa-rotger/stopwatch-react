@@ -20,7 +20,7 @@ function App() {
   const [lapTotalTime, setLapTotalTime] = useState(0)
 
   const [lapInfo, setLapInfo] = useState(initialLapState)
-  const [highestLowestLaps, sethighestLowestLaps] = useState(
+  const [highestLowestLaps, setHighestLowestLaps] = useState(
     initialHighestLowestLapsState,
   )
   const [lapId, setLapId] = useState(1)
@@ -50,13 +50,13 @@ function App() {
 
   const findHighestLowestLaps = (newLap) => {
     if (newLap.interval < highestLowestLaps.lowestLap.interval) {
-      sethighestLowestLaps((prev) => ({
+      setHighestLowestLaps((prev) => ({
         ...prev,
         lowestLap: newLap,
       }))
     }
     if (newLap.interval > highestLowestLaps.highestLap.interval) {
-      sethighestLowestLaps((prev) => ({
+      setHighestLowestLaps((prev) => ({
         ...prev,
         highestLap: newLap,
       }))
