@@ -1,4 +1,5 @@
 import React from 'react'
+import './TimerControls.css'
 
 function Button(props) {
   const { id, isRunning, buttonStatus, handleClick } = props
