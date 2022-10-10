@@ -7,7 +7,9 @@ import TimerControls from '../Buttons/TimerControls'
 
 // 1. Render with no crashes: needs props to work
 test('Component renders without crashing', () => {
-  let myControls = <TimerControls isRunning={true}></TimerControls>
+  let myControls = (
+    <TimerControls isRunning={true} handleTime={(a) => console.log(a)}></TimerControls>
+  )
   render(myControls)
 
   const testControls = screen.getByTestId('test-controls')
