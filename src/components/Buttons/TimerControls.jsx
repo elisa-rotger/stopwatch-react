@@ -18,7 +18,7 @@ function TimerControls(props) {
 
   useEffect(() => {
     handleTime(totalTime)
-  }, [totalTime, handleTime])
+  }, [totalTime])
 
   useEffect(() => {
     isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })

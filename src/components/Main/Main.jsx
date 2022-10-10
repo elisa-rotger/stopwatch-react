@@ -8,9 +8,11 @@ import Footer from '../Footer/Footer'
 
 function Main() {
   const [elapsedTime, setElapsedTime] = useState(0)
-  const [lapId, setLapId] = useState(1)
+  const [lapId, setLapId] = useState(0)
 
   const handleTime = (passedTime) => {
+    /* Starting lap -> make LapsDisplay update the first running lap */
+    if (passedTime === 1) setLapId(1)
     setElapsedTime(passedTime)
   }
 
@@ -20,7 +22,7 @@ function Main() {
 
   const reset = () => {
     setElapsedTime(0)
-    setLapId(1)
+    setLapId(0)
   }
 
   return (
