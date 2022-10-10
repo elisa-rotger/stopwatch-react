@@ -18,6 +18,7 @@ function TimerControls(props) {
 
   useEffect(() => {
     handleTime(totalTime)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalTime])
 
   useEffect(() => {

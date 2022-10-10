@@ -8,60 +8,74 @@ const initialHighestLowestLaps = {
   highestLap: { id: undefined, interval: 0 },
   lowestLap: { id: undefined, interval: Infinity },
 }
+const initialRunningLap = {
+  interval: 0,
+  id: 0,
+}
 const initialEmptyLapsState = [1, 2, 3, 4, 5, 6]
 
-/* useReducer functions */
-const init = (initialCount, lastID) => {
-  return { interval: initialCount, id: lastID + 1 }
-}
+/* useReducer function */
 const reducerRunningLap = (state, action) => {
   switch (action.type) {
-    case 'init':
-      return { interval: action.interval, id: action.id }
     case 'increment':
       return { interval: state.interval + 1, id: state.id }
     case 'add lap':
-      return init(0, state.id)
+      return { interval: 0, id: state.id + 1 }
     case 'reset':
-      return init(0, 0)
+      return { interval: 0, id: 1 }
     default:
-      throw new Error()
+      throw new Error('wrong action type')
   }
 }
+
+const reducerHighestLowest = (state, action) => {
+  switch (action.type) {
+    case 'change highest':
+      return { ...state, highestLap: action.highestLap }
+    case 'change lowest':
+      return { ...state, lowestLap: action.lowestLap }
+    case 'reset':
+      return initialHighestLowestLaps
+    default:
+      return { ...state }
+  }
+}
+
+// TODO: Move lap state back to parent :(
 
 function LapControls(props) {
   const { elapsedTime, lapId } = props
 
   const runningLapRef = useRef()
-  const [stateRunningLap, dispatchRunningLap] = useReducer(reducerRunningLap, {}, init)
+  const [stateRunningLap, dispatchRunningLap] = useReducer(
+    reducerRunningLap,
+    initialRunningLap,
+  )
 
   const [allLaps, setAllLaps] = useState([])
 
   const highestLowestRef = useRef()
-  const [highestLowestLaps, setHighestLowestLaps] = useState(initialHighestLowestLaps)
+  const [stateHighestLowest, dispatchHighestLowest] = useReducer(
+    reducerHighestLowest,
+    initialHighestLowestLaps,
+  )
 
   const [emptyLaps, setEmptyLaps] = useState(initialEmptyLapsState)
   const [isScrolling, setIsScrolling] = useState(false)
 
   const findHighestLowestLaps = (newLap) => {
     if (newLap.interval < highestLowestRef.current.lowestLap.interval) {
-      setHighestLowestLaps((prev) => ({
-        ...prev,
-        lowestLap: newLap,
-      }))
+      dispatchHighestLowest({ type: 'change lowest', lowestLap: newLap })
     }
     if (newLap.interval > highestLowestRef.current.highestLap.interval) {
-      setHighestLowestLaps((prev) => ({
-        ...prev,
-        highestLap: newLap,
-      }))
+      dispatchHighestLowest({ type: 'change highest', highestLap: newLap })
     }
   }
 
   /* Track refs */
   useEffect(() => {
-    highestLowestRef.current = highestLowestLaps
-  }, [highestLowestLaps])
+    highestLowestRef.current = stateHighestLowest
+  }, [stateHighestLowest])
 
   useEffect(() => {
     runningLapRef.current = stateRunningLap
@@ -96,7 +110,7 @@ function LapControls(props) {
 
   const resetLaps = () => {
     dispatchRunningLap({ type: 'reset' })
-    setHighestLowestLaps(initialHighestLowestLaps)
+    dispatchHighestLowest({ type: 'reset' })
     setAllLaps([])
     setEmptyLaps(initialEmptyLapsState)
   }
