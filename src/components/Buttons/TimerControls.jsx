@@ -8,12 +8,17 @@ function TimerControls(props) {
   const { handleTime, handleLap, handleReset } = props
 
   const [isRunning, setIsRunning] = useState(false)
+  const [totalTime, setTotalTime] = useState(0)
 
   useEffect(() => {
-    const subscription = timer$.subscribe((value) => handleTime(value))
+    const subscription = timer$.subscribe((value) => setTotalTime(value))
 
     return () => subscription.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    handleTime(totalTime)
+  }, [totalTime, handleTime])
 
   useEffect(() => {
     isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })
