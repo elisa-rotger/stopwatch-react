@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState, useReducer, useRef } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import { getFormattedTime } from '../../utils/formatting-utils'
 import EmptyLaps from './EmptyLaps'
 import './LapsDisplay.css'

@@ -1,37 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Button from './Button'
 import './TimerControls.css'
-
-import { timer$ } from '../../utils/observables'
 
 function TimerControls(props) {
   const { handleTime, handleLap, handleReset } = props
 
   const [isRunning, setIsRunning] = useState(false)
-  const [totalTime, setTotalTime] = useState(0)
 
-  useEffect(() => {
-    const subscription = timer$.subscribe((value) => setTotalTime(value))
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  useEffect(() => {
-    handleTime(totalTime)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalTime])
-
-  useEffect(() => {
-    isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })
-  }, [isRunning])
+  const startStop = (newIsRunning) => {
+    setIsRunning(newIsRunning)
+    handleTime(newIsRunning)
+  }
 
   const lapReset = () => {
-    if (isRunning) {
-      handleLap()
-    } else {
-      timer$.next({ counter: 0 })
-      handleReset()
-    }
+    isRunning ? handleLap() : handleReset()
   }
 
   return (
@@ -59,7 +41,7 @@ function TimerControls(props) {
             true: { innerText: 'Stop', className: 'active-stop' },
             false: { innerText: 'Start', className: 'active-start' },
           }}
-          handleClick={() => setIsRunning(!isRunning)}
+          handleClick={() => startStop(!isRunning)}
         />
       </div>
     </section>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect, useReducer } from 'react'
 
+import { timer$ } from '../../utils/observables'
+
 import TimerControls from '../Buttons/TimerControls'
 import TimerDisplay from '../Timer/TimerDisplay'
 import LapsDisplay from '../Laps/LapsDisplay'
@@ -32,8 +34,14 @@ function Main() {
   )
   const [allLaps, setAllLaps] = useState([])
 
-  const handleTime = (passedTime) => {
-    setElapsedTime(passedTime)
+  useEffect(() => {
+    const subscription = timer$.subscribe((value) => setElapsedTime(value))
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleTime = (isRunning) => {
+    isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })
   }
 
   useEffect(() => {
@@ -50,13 +58,14 @@ function Main() {
     setElapsedTime(0)
     setAllLaps([])
     dispatchRunningLap({ type: 'reset' })
+    timer$.next({ counter: 0 })
   }
 
   return (
     <main className={'main-wrapper'}>
       <TimerDisplay elapsedTime={elapsedTime} />
       <TimerControls
-        handleTime={(passedTime) => handleTime(passedTime)}
+        handleTime={(isRunning) => handleTime(isRunning)}
         handleLap={handleAddLap}
         handleReset={reset}
       />
