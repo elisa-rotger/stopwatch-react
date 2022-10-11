@@ -1,15 +1,13 @@
 import React from 'react'
 import { useEffect, useState, useReducer, useRef } from 'react'
 import { getFormattedTime } from '../../utils/formatting-utils'
+import EmptyLaps from './EmptyLaps'
 import './LapsDisplay.css'
 
-/* Initial states */
 const initialHighestLowestLaps = {
   highestLap: { id: undefined, interval: 0 },
   lowestLap: { id: undefined, interval: Infinity },
 }
-
-const initialEmptyLapsState = [1, 2, 3, 4, 5, 6]
 
 const reducerHighestLowest = (state, action) => {
   switch (action.type) {
@@ -32,7 +30,6 @@ function LapControls(props) {
     initialHighestLowestLaps,
   )
 
-  const [emptyLaps, setEmptyLaps] = useState(initialEmptyLapsState)
   const [isScrolling, setIsScrolling] = useState(false)
 
   useEffect(() => {
@@ -49,7 +46,6 @@ function LapControls(props) {
     }
   }
 
-  /* Helper function to get highest / lowest class name */
   const getClassName = (id) => {
     if (allLaps.length > 1 && stateHighestLowest.highestLap.id === id) return 'highest'
     if (allLaps.length > 1 && stateHighestLowest.lowestLap.id === id) return 'lowest'
@@ -87,14 +83,7 @@ function LapControls(props) {
               <td>{getFormattedTime(lap.interval)}</td>
             </tr>
           ))}
-          {/* EmptyLaps component that will have informed the number of laps by props */}
-          {emptyLaps &&
-            emptyLaps.map((emptyLap, index) => (
-              <tr key={index} className={'lap'}>
-                <td></td>
-                <td></td>
-              </tr>
-            ))}
+          <EmptyLaps numOfLaps={6 - allLaps.length} />
         </tbody>
       </table>
     </section>
