@@ -1,10 +1,14 @@
 import React from 'react'
 import Main from './components/Main/Main'
+import Footer from './components/Footer/Footer'
 
 function App() {
   return (
     <div className={'App'}>
-      <Main />
+      <main className={'main-wrapper'}>
+        <Main />
+        <Footer />
+      </main>
     </div>
   )
 }

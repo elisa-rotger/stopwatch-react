@@ -6,7 +6,6 @@ import { timer$ } from '../../utils/observables'
 import TimerControls from '../Buttons/TimerControls'
 import TimerDisplay from '../Timer/TimerDisplay'
 import LapsDisplay from '../Laps/LapsDisplay'
-import Footer from '../Footer/Footer'
 
 const initialRunningLap = {
   interval: 0,
@@ -62,7 +61,7 @@ function Main() {
   }
 
   return (
-    <main className={'main-wrapper'}>
+    <>
       <TimerDisplay elapsedTime={elapsedTime} />
       <TimerControls
         handleTime={(isRunning) => handleTime(isRunning)}
@@ -70,8 +69,7 @@ function Main() {
         handleReset={reset}
       />
       <LapsDisplay runningLap={stateRunningLap} allLaps={allLaps} />
-      <Footer />
-    </main>
+    </>
   )
 }
 
