@@ -1,7 +1,8 @@
 import React from 'react'
 import { useEffect, useState, useReducer } from 'react'
-import { getFormattedTime } from '../../utils/formatting-utils'
 import EmptyLaps from './EmptyLaps'
+import RunningLap from './RunningLap'
+import Lap from './Lap'
 import './LapsDisplay.css'
 
 const initialHighestLowestLaps = {
@@ -23,7 +24,7 @@ const reducerHighestLowest = (state, action) => {
 }
 
 function LapControls(props) {
-  const { runningLap, allLaps } = props
+  const { allLaps } = props
 
   const [stateHighestLowest, dispatchHighestLowest] = useReducer(
     reducerHighestLowest,
@@ -63,25 +64,14 @@ function LapControls(props) {
     })
   }, [])
 
+  // TODO: Make component for each lap so running lap can access its value from context -> no free re-renders?
   return (
     <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
-          {runningLap.interval > 0 && (
-            <tr className={'lap'}>
-              <td>{`Lap ${runningLap.id}`}</td>
-              <td>{getFormattedTime(runningLap.interval)}</td>
-            </tr>
-          )}
+          <RunningLap />
           {allLaps.map((lap) => (
-            <tr
-              key={lap.id}
-              id={`lap-${lap.id}`}
-              className={`lap ${getClassName(lap.id)}`}
-            >
-              <td>{`Lap ${lap.id}`}</td>
-              <td>{getFormattedTime(lap.interval)}</td>
-            </tr>
+            <Lap lap={lap} key={lap.id} className={`lap ${getClassName(lap.id)}`} />
           ))}
           <EmptyLaps numOfLaps={6 - allLaps.length} />
         </tbody>
