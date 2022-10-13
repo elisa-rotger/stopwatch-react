@@ -7,23 +7,10 @@ import TimerControls from '../Buttons/TimerControls'
 import TimerDisplay from '../Timer/TimerDisplay'
 import LapsDisplay from '../Laps/LapsDisplay'
 
-const initialRunningLap = { interval: 0, id: 1 }
-
-const reducerRunningLap = (state, action) => {
-  switch (action.type) {
-    case 'increment':
-      return { interval: state.interval + 1, id: state.id }
-    case 'reset lap':
-      return { interval: 0, id: state.id + 1 }
-    case 'reset':
-      return initialRunningLap
-    default:
-      throw new Error('wrong action type')
-  }
-}
-
 const initialAllLaps = {
   allLaps: [],
+  lapTotalTime: 0,
+  lapId: 1,
   highestLap: { id: undefined, interval: 0 },
   lowestLap: { id: undefined, interval: Infinity },
 }
@@ -31,24 +18,18 @@ const initialAllLaps = {
 const reducerAllLaps = (state, action) => {
   switch (action.type) {
     case 'add lap':
-      if (action.payload.interval < state.lowestLap.interval) {
-        return {
-          allLaps: [action.payload, ...state.allLaps],
-          highestLap: state.highestLap,
-          lowestLap: action.payload,
-        }
-      }
-      if (action.payload.interval > state.highestLap.interval) {
-        return {
-          allLaps: [action.payload, ...state.allLaps],
-          highestLap: action.payload,
-          lowestLap: state.lowestLap,
-        }
-      }
       return {
-        allLaps: [action.payload, ...state.allLaps],
-        highestLap: state.highestLap,
-        lowestLap: state.lowestLap,
+        allLaps: [action.payload.newLap, ...state.allLaps],
+        lapTotalTime: action.payload.newTotalLapTime,
+        lapId: state.lapId + 1,
+        highestLap:
+          action.payload.newLap.interval > state.highestLap.interval
+            ? action.payload.newLap
+            : state.highestLap,
+        lowestLap:
+          action.payload.newLap.interval < state.lowestLap.interval
+            ? action.payload.newLap
+            : state.lowestLap,
       }
     case 'reset':
       return initialAllLaps
@@ -57,14 +38,12 @@ const reducerAllLaps = (state, action) => {
   }
 }
 
-export const myContext = createContext(initialRunningLap)
+export const myContext = createContext(0)
 
 function Main() {
+  // TODO: Move elapsedtime back to button controls
   const [elapsedTime, setElapsedTime] = useState(0)
-  const [stateRunningLap, dispatchRunningLap] = useReducer(
-    reducerRunningLap,
-    initialRunningLap,
-  )
+
   const [stateLaps, dispatchLaps] = useReducer(reducerAllLaps, initialAllLaps)
 
   /* Subscribe to obs */
@@ -79,28 +58,24 @@ function Main() {
     isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })
   }
 
-  /* Keep running lap in time with main timer */
-  useEffect(() => {
-    if (elapsedTime) dispatchRunningLap({ type: 'increment' })
-  }, [elapsedTime])
-
   /* Add lap function */
   const handleAddLap = () => {
-    const newLap = { id: stateRunningLap.id, interval: stateRunningLap.interval }
-    dispatchLaps({ type: 'add lap', payload: newLap })
-    dispatchRunningLap({ type: 'reset lap' })
+    const newLap = { id: stateLaps.lapId, interval: elapsedTime - stateLaps.lapTotalTime }
+    dispatchLaps({
+      type: 'add lap',
+      payload: { newLap: newLap, newTotalLapTime: elapsedTime },
+    })
   }
 
   /* Reset function */
   const reset = () => {
     setElapsedTime(0)
-    dispatchRunningLap({ type: 'reset' })
     dispatchLaps({ type: 'reset' })
     timer$.next({ counter: 0 })
   }
 
   return (
-    <myContext.Provider value={stateRunningLap}>
+    <myContext.Provider value={elapsedTime}>
       <TimerDisplay elapsedTime={elapsedTime} />
       <TimerControls
         handleElapsedTime={(isRunning) => handleElapsedTime(isRunning)}

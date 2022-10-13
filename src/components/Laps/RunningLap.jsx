@@ -3,14 +3,15 @@ import { useContext } from 'react'
 import { myContext } from '../Main/Main'
 import { getFormattedTime } from '../../utils/formatting-utils'
 
-function RunningLap() {
-  const lap = useContext(myContext)
+function RunningLap(props) {
+  const { stateLaps } = props
+  const elapsedTime = useContext(myContext)
   return (
     <>
-      {lap.interval > 0 && (
+      {elapsedTime > 0 && (
         <tr className={'lap'}>
-          <td>{`Lap ${lap.id}`}</td>
-          <td>{getFormattedTime(lap.interval)}</td>
+          <td>{`Lap ${stateLaps.allLaps.length + 1}`}</td>
+          <td>{getFormattedTime(elapsedTime - stateLaps.lapTotalTime)}</td>
         </tr>
       )}
     </>

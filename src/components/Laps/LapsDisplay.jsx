@@ -31,7 +31,7 @@ const LapControls = memo(function LapControls(props) {
     <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
-          <RunningLap />
+          <RunningLap stateLaps={stateLaps} />
           {stateLaps.allLaps.length > 0 &&
             stateLaps.allLaps.map((lap) => (
               <Lap lap={lap} key={lap.id} className={`lap ${getClassName(lap.id)}`} />
