@@ -1,12 +1,11 @@
 import React from 'react'
-import { useState, useEffect, useReducer } from 'react'
+import { useState, useEffect, useReducer, createContext } from 'react'
 
 import { timer$ } from '../../utils/observables'
 
 import TimerControls from '../Buttons/TimerControls'
 import TimerDisplay from '../Timer/TimerDisplay'
 import LapsDisplay from '../Laps/LapsDisplay'
-import Footer from '../Footer/Footer'
 
 const initialRunningLap = {
   interval: 0,
@@ -20,11 +19,13 @@ const reducerRunningLap = (state, action) => {
     case 'add lap':
       return { interval: 0, id: state.id + 1 }
     case 'reset':
-      return { interval: 0, id: 1 }
+      return initialRunningLap
     default:
       throw new Error('wrong action type')
   }
 }
+
+export const runningLapContext = createContext(initialRunningLap)
 
 function Main() {
   const [elapsedTime, setElapsedTime] = useState(0)
@@ -40,7 +41,7 @@ function Main() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const handleTime = (isRunning) => {
+  const handleElapsedTime = (isRunning) => {
     isRunning ? timer$.next({ pause: false }) : timer$.next({ pause: true })
   }
 
@@ -62,16 +63,15 @@ function Main() {
   }
 
   return (
-    <main className={'main-wrapper'}>
+    <runningLapContext.Provider value={stateRunningLap}>
       <TimerDisplay elapsedTime={elapsedTime} />
       <TimerControls
-        handleTime={(isRunning) => handleTime(isRunning)}
+        handleElapsedTime={(isRunning) => handleElapsedTime(isRunning)}
         handleLap={handleAddLap}
         handleReset={reset}
       />
-      <LapsDisplay runningLap={stateRunningLap} allLaps={allLaps} />
-      <Footer />
-    </main>
+      <LapsDisplay allLaps={allLaps} />
+    </runningLapContext.Provider>
   )
 }
 

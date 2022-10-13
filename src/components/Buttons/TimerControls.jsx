@@ -3,13 +3,13 @@ import Button from './Button'
 import './TimerControls.css'
 
 function TimerControls(props) {
-  const { handleTime, handleLap, handleReset } = props
+  const { handleElapsedTime, handleLap, handleReset } = props
 
   const [isRunning, setIsRunning] = useState(false)
 
   const startStop = (newIsRunning) => {
     setIsRunning(newIsRunning)
-    handleTime(newIsRunning)
+    handleElapsedTime(newIsRunning)
   }
 
   const lapReset = () => {
@@ -48,4 +48,5 @@ function TimerControls(props) {
   )
 }
 
+// export default React.memo(TimerControls)
 export default TimerControls
