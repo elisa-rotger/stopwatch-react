@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState, useReducer } from 'react'
+import { useEffect, useState, useReducer, memo } from 'react'
 import EmptyLaps from './EmptyLaps'
 import RunningLap from './RunningLap'
 import Lap from './Lap'
@@ -23,7 +23,7 @@ const reducerHighestLowest = (state, action) => {
   }
 }
 
-function LapControls(props) {
+const LapControls = memo(function LapControls(props) {
   const { allLaps } = props
 
   const [stateHighestLowest, dispatchHighestLowest] = useReducer(
@@ -78,6 +78,6 @@ function LapControls(props) {
       </table>
     </section>
   )
-}
+})
 
 export default LapControls
