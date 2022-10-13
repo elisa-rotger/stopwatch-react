@@ -1,10 +1,10 @@
 import React from 'react'
 import { useContext } from 'react'
-import { runningLapContext } from '../Main/Main'
+import { myContext } from '../Main/Main'
 import { getFormattedTime } from '../../utils/formatting-utils'
 
 function RunningLap() {
-  const lap = useContext(runningLapContext)
+  const lap = useContext(myContext)
   return (
     <>
       {lap.interval > 0 && (
