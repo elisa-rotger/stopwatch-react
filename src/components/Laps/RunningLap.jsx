@@ -1,17 +1,18 @@
 import React from 'react'
-import { useContext } from 'react'
-import { myContext } from '../Main/Main'
+import { useAllLaps } from '../../providers/LapDataProvider'
+import { useTime } from '../../providers/TimeProvider'
 import { getFormattedTime } from '../../utils/formatting-utils'
 
-function RunningLap(props) {
-  const { stateLaps } = props
-  const elapsedTime = useContext(myContext)
+function RunningLap() {
+  const [stateLaps] = useAllLaps()
+  const [stateTime] = useTime()
+
   return (
     <>
-      {elapsedTime > 0 && (
+      {stateTime.elapsedTime > 0 && (
         <tr className={'lap'}>
           <td>{`Lap ${stateLaps.allLaps.length + 1}`}</td>
-          <td>{getFormattedTime(elapsedTime - stateLaps.lapTotalTime)}</td>
+          <td>{getFormattedTime(stateTime.elapsedTime - stateLaps.lapTotalTime)}</td>
         </tr>
       )}
     </>

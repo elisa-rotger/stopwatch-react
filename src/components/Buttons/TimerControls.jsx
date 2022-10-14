@@ -1,19 +1,41 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useEffect } from 'react'
+
+import { timer$ } from '../../utils/observables'
+
+import { useTime } from '../../providers/TimeProvider'
+import { ACTIONS as TIME_ACTIONS } from '../../reducers/timeReducer'
+
+import { useAllLaps } from '../../providers/LapDataProvider'
+import { ACTIONS as LAP_ACTIONS } from '../../reducers/lapReducer'
+
 import Button from './Button'
 import './TimerControls.css'
 
-function TimerControls(props) {
-  const { handleElapsedTime, handleLap, handleReset } = props
+function TimerControls({ handleLap }) {
+  const [stateTime, dispatchTime] = useTime()
+  const [stateLaps, dispatchLaps] = useAllLaps()
 
-  const [isRunning, setIsRunning] = useState(false)
+  useEffect(() => {
+    const subscription = timer$.subscribe((value) =>
+      dispatchTime({ type: TIME_ACTIONS.SET_ELAPSED_TIME, payload: value }),
+    )
+    return () => subscription.unsubscribe()
+  }, [dispatchTime])
 
-  const startStop = (newIsRunning) => {
-    setIsRunning(newIsRunning)
-    handleElapsedTime(newIsRunning)
+  const startStop = () => {
+    timer$.next({ isPaused: !stateTime.isRunning })
+    dispatchTime({ type: TIME_ACTIONS.TOGGLE_TIMER })
   }
 
   const lapReset = () => {
-    isRunning ? handleLap() : handleReset()
+    if (stateTime.isRunning) {
+      handleLap()
+    } else {
+      dispatchTime({ type: TIME_ACTIONS.RESET_TIMER })
+      dispatchLaps({ type: LAP_ACTIONS.RESET_LAPS })
+      timer$.next({ counter: 0 })
+    }
   }
 
   return (
@@ -21,7 +43,7 @@ function TimerControls(props) {
       <div className={'button-wrapper'}>
         <Button
           id={'lap-reset'}
-          isRunning={isRunning}
+          isRunning={stateTime.isRunning}
           buttonStatus={{
             true: { innerText: 'Lap', className: 'active-reset' },
             false: { innerText: 'Reset', className: 'active-reset' },
@@ -36,17 +58,16 @@ function TimerControls(props) {
       <div className={'button-wrapper'}>
         <Button
           id={'start-stop'}
-          isRunning={isRunning}
+          isRunning={stateTime.isRunning}
           buttonStatus={{
             true: { innerText: 'Stop', className: 'active-stop' },
             false: { innerText: 'Start', className: 'active-start' },
           }}
-          handleClick={() => startStop(!isRunning)}
+          handleClick={startStop}
         />
       </div>
     </section>
   )
 }
 
-// export default React.memo(TimerControls)
 export default TimerControls

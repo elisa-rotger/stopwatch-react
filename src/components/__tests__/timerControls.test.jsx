@@ -1,21 +1,40 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import TimerControls from '../Buttons/TimerControls'
 
-// TODO: Write tests for the timer controls
+import TimerControls from '../Buttons/TimerControls'
+import { AllLapsContext } from '../../providers/LapDataProvider'
+import { TimeDataContext } from '../../providers/TimeProvider'
+
+const TIME_TO_TEST = {
+  isRunning: false,
+  elapsedTime: 2000,
+}
+
+const LAP_TO_TEST = {
+  allLaps: [
+    { id: 1, interval: 200 },
+    { id: 2, interval: 60 },
+  ],
+  lapTotalTime: 260,
+  lapId: 3,
+  highestLap: { id: 1, interval: 200 },
+  lowestLap: { id: 2, interval: 60 },
+}
 
 // 1. Render with no crashes: needs props to work
 test('Component renders without crashing', () => {
-  let myControls = (
-    <TimerControls isRunning={true} handleTime={(a) => console.log(a)}></TimerControls>
+  const lapsContextValue = [LAP_TO_TEST, () => {}]
+  const timeContextValue = [TIME_TO_TEST, () => {}]
+
+  render(
+    <AllLapsContext.Provider value={lapsContextValue}>
+      <TimeDataContext.Provider value={timeContextValue}>
+        <TimerControls />
+      </TimeDataContext.Provider>
+    </AllLapsContext.Provider>,
   )
-  render(myControls)
 
   const testControls = screen.getByTestId('test-controls')
   expect(testControls).toBeInTheDocument()
 })
-
-// 2. Expected behavior when passing certain props
-
-// 3. Actions it takes depend on actions of the buttons inside -> how to test?

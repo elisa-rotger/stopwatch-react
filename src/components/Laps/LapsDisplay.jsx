@@ -1,12 +1,17 @@
 import React from 'react'
 import { useEffect, useState, memo } from 'react'
+
+import { useAllLaps } from '../../providers/LapDataProvider'
+import { getFormattedTime } from '../../utils/formatting-utils'
+
 import EmptyLaps from './EmptyLaps'
 import RunningLap from './RunningLap'
-import Lap from './Lap'
+
 import './LapsDisplay.css'
 
-const LapControls = memo(function LapControls(props) {
-  const { stateLaps } = props
+const LapControls = memo(function LapControls() {
+  // const [stateLaps, dispatchLaps] = useAllLaps()
+  const [stateLaps] = useAllLaps()
 
   const [isScrolling, setIsScrolling] = useState(false)
 
@@ -31,11 +36,13 @@ const LapControls = memo(function LapControls(props) {
     <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
-          <RunningLap stateLaps={stateLaps} />
-          {stateLaps.allLaps.length > 0 &&
-            stateLaps.allLaps.map((lap) => (
-              <Lap lap={lap} key={lap.id} className={`lap ${getClassName(lap.id)}`} />
-            ))}
+          <RunningLap />
+          {stateLaps.allLaps.map((lap) => (
+            <tr key={lap.id} className={`lap ${getClassName(lap.id)}`}>
+              <td>{`Lap ${lap.id}`}</td>
+              <td>{getFormattedTime(lap.interval)}</td>
+            </tr>
+          ))}
           <EmptyLaps numOfLaps={6 - stateLaps.allLaps.length} />
         </tbody>
       </table>
