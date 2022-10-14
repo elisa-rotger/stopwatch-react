@@ -1,17 +1,18 @@
 import React from 'react'
 
-import { useAllLaps } from '../../providers/LapDataProvider'
+import { useLapsData, useDispatchLaps } from '../../providers/LapDataProvider'
 import { ACTIONS as LAP_ACTIONS } from '../../reducers/lapReducer'
 
-import { useTime } from '../../providers/TimeProvider'
+import { useTimeData } from '../../providers/TimeProvider'
 
 import TimerControls from '../Buttons/TimerControls'
 import TimerDisplay from '../Timer/TimerDisplay'
 import LapsDisplay from '../Laps/LapsDisplay'
 
 function Main() {
-  const [stateTime] = useTime()
-  const [stateLaps, dispatchLaps] = useAllLaps()
+  const stateTime = useTimeData()
+  const stateLaps = useLapsData()
+  const dispatchLaps = useDispatchLaps()
 
   const handleAddLap = () => {
     const newLap = {

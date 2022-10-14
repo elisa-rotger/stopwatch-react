@@ -2,20 +2,27 @@ import { createContext, useReducer, useContext } from 'react'
 import React from 'react'
 import { initialLapData, reducerAllLaps } from '../reducers/lapReducer'
 
-export const AllLapsContext = createContext()
+export const StateLapsContext = createContext()
+export const DispatchLapsContext = createContext()
 
 export default function LapDataProvider({ children }) {
   const [stateLaps, dispatchAllLaps] = useReducer(reducerAllLaps, initialLapData)
 
   return (
-    <AllLapsContext.Provider value={[stateLaps, dispatchAllLaps]}>
-      {children}
-    </AllLapsContext.Provider>
+    <StateLapsContext.Provider value={stateLaps}>
+      <DispatchLapsContext.Provider value={dispatchAllLaps}>
+        {children}
+      </DispatchLapsContext.Provider>
+    </StateLapsContext.Provider>
   )
 }
 
-function useAllLaps() {
-  return useContext(AllLapsContext)
+function useLapsData() {
+  return useContext(StateLapsContext)
 }
 
-export { useAllLaps }
+function useDispatchLaps() {
+  return useContext(DispatchLapsContext)
+}
+
+export { useLapsData, useDispatchLaps }

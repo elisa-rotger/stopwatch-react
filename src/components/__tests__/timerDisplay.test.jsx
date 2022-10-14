@@ -12,10 +12,10 @@ const TIME_TO_TEST = {
 
 // 1. Render with no crashes: needs props to work
 test('Component renders without crashing', () => {
-  const timeContextValue = [TIME_TO_TEST, () => {}]
+  const timeDataContextValue = TIME_TO_TEST
 
   render(
-    <TimeDataContext.Provider value={timeContextValue}>
+    <TimeDataContext.Provider value={timeDataContextValue}>
       <TimerDisplay />
     </TimeDataContext.Provider>,
   )

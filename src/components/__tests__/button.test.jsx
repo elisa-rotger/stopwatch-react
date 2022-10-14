@@ -14,6 +14,7 @@ test('Component renders without crashing', () => {
         true: { innerText: 'Something to test true', className: 'active-reset' },
         false: { innerText: 'Trying to test false', className: 'active-reset' },
       }}
+      disabled={false}
     ></Button>
   )
   render(myButton)

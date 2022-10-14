@@ -3,18 +3,19 @@ import { useEffect } from 'react'
 
 import { timer$ } from '../../utils/observables'
 
-import { useTime } from '../../providers/TimeProvider'
+import { useTimeData, useTimeDispatch } from '../../providers/TimeProvider'
 import { ACTIONS as TIME_ACTIONS } from '../../reducers/timeReducer'
 
-import { useAllLaps } from '../../providers/LapDataProvider'
+import { useDispatchLaps } from '../../providers/LapDataProvider'
 import { ACTIONS as LAP_ACTIONS } from '../../reducers/lapReducer'
 
 import Button from './Button'
 import './TimerControls.css'
 
 function TimerControls({ handleLap }) {
-  const [stateTime, dispatchTime] = useTime()
-  const [stateLaps, dispatchLaps] = useAllLaps()
+  const stateTime = useTimeData()
+  const dispatchTime = useTimeDispatch()
+  const dispatchLaps = useDispatchLaps()
 
   useEffect(() => {
     const subscription = timer$.subscribe((value) =>
@@ -24,7 +25,8 @@ function TimerControls({ handleLap }) {
   }, [dispatchTime])
 
   const startStop = () => {
-    timer$.next({ isPaused: !stateTime.isRunning })
+    /* timer needs the opposite of isRunning -> isPaused === !isRunning */
+    timer$.next({ isPaused: stateTime.isRunning })
     dispatchTime({ type: TIME_ACTIONS.TOGGLE_TIMER })
   }
 
@@ -49,6 +51,7 @@ function TimerControls({ handleLap }) {
             false: { innerText: 'Reset', className: 'active-reset' },
           }}
           handleClick={lapReset}
+          disabled={!stateTime.isRunning && stateTime.elapsedTime === 0}
         />
       </div>
       <div className={'circle-wrapper'}>
@@ -64,6 +67,7 @@ function TimerControls({ handleLap }) {
             false: { innerText: 'Start', className: 'active-start' },
           }}
           handleClick={startStop}
+          disabled={false}
         />
       </div>
     </section>

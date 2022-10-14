@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState, memo } from 'react'
 
-import { useAllLaps } from '../../providers/LapDataProvider'
+import { useLapsData } from '../../providers/LapDataProvider'
 import { getFormattedTime } from '../../utils/formatting-utils'
 
 import EmptyLaps from './EmptyLaps'
@@ -10,8 +10,7 @@ import RunningLap from './RunningLap'
 import './LapsDisplay.css'
 
 const LapControls = memo(function LapControls() {
-  // const [stateLaps, dispatchLaps] = useAllLaps()
-  const [stateLaps] = useAllLaps()
+  const stateLaps = useLapsData()
 
   const [isScrolling, setIsScrolling] = useState(false)
 

@@ -1,11 +1,11 @@
 import React from 'react'
-import { useAllLaps } from '../../providers/LapDataProvider'
-import { useTime } from '../../providers/TimeProvider'
+import { useLapsData } from '../../providers/LapDataProvider'
+import { useTimeData } from '../../providers/TimeProvider'
 import { getFormattedTime } from '../../utils/formatting-utils'
 
 function RunningLap() {
-  const [stateLaps] = useAllLaps()
-  const [stateTime] = useTime()
+  const stateLaps = useLapsData()
+  const stateTime = useTimeData()
 
   return (
     <>
