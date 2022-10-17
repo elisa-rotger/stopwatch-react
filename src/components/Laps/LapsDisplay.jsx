@@ -1,55 +1,22 @@
 import React from 'react'
-import { useEffect, useState, useReducer, memo } from 'react'
+import { useEffect, useState, memo } from 'react'
+
+import { useLapsData } from '../../providers/LapDataProvider'
+import { getFormattedTime } from '../../utils/formatting-utils'
+
 import EmptyLaps from './EmptyLaps'
 import RunningLap from './RunningLap'
-import Lap from './Lap'
+
 import './LapsDisplay.css'
 
-const initialHighestLowestLaps = {
-  highestLap: { id: undefined, interval: 0 },
-  lowestLap: { id: undefined, interval: Infinity },
-}
-
-const reducerHighestLowest = (state, action) => {
-  switch (action.type) {
-    case 'change highest':
-      return { ...state, highestLap: action.highestLap }
-    case 'change lowest':
-      return { ...state, lowestLap: action.lowestLap }
-    case 'reset':
-      return initialHighestLowestLaps
-    default:
-      return { ...state }
-  }
-}
-
-const LapControls = memo(function LapControls(props) {
-  const { allLaps } = props
-
-  const [stateHighestLowest, dispatchHighestLowest] = useReducer(
-    reducerHighestLowest,
-    initialHighestLowestLaps,
-  )
+const LapControls = memo(function LapControls() {
+  const stateLaps = useLapsData()
 
   const [isScrolling, setIsScrolling] = useState(false)
 
-  useEffect(() => {
-    const newLap = allLaps[0]
-    if (allLaps.length) findHighestLowestLaps(newLap)
-  }, [allLaps])
-
-  const findHighestLowestLaps = (newLap) => {
-    if (newLap.interval < stateHighestLowest.lowestLap.interval) {
-      dispatchHighestLowest({ type: 'change lowest', lowestLap: newLap })
-    }
-    if (newLap.interval > stateHighestLowest.highestLap.interval) {
-      dispatchHighestLowest({ type: 'change highest', highestLap: newLap })
-    }
-  }
-
   const getClassName = (id) => {
-    if (allLaps.length > 1 && stateHighestLowest.highestLap.id === id) return 'highest'
-    if (allLaps.length > 1 && stateHighestLowest.lowestLap.id === id) return 'lowest'
+    if (stateLaps.allLaps.length > 1 && stateLaps.highestLap.id === id) return 'highest'
+    if (stateLaps.allLaps.length > 1 && stateLaps.lowestLap.id === id) return 'lowest'
     return ''
   }
 
@@ -64,16 +31,21 @@ const LapControls = memo(function LapControls(props) {
     })
   }, [])
 
-  // TODO: Make component for each lap so running lap can access its value from context -> no free re-renders?
   return (
-    <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
+    <section
+      className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}
+      data-testid={'test-lapdisplay'}
+    >
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
           <RunningLap />
-          {allLaps.map((lap) => (
-            <Lap lap={lap} key={lap.id} className={`lap ${getClassName(lap.id)}`} />
+          {stateLaps.allLaps.map((lap) => (
+            <tr key={lap.id} className={`lap ${getClassName(lap.id)}`}>
+              <td>{`Lap ${lap.id}`}</td>
+              <td>{getFormattedTime(lap.interval)}</td>
+            </tr>
           ))}
-          <EmptyLaps numOfLaps={6 - allLaps.length} />
+          <EmptyLaps numOfLaps={6 - stateLaps.allLaps.length} />
         </tbody>
       </table>
     </section>

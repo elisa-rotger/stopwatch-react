@@ -1,21 +1,32 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+
 import TimerControls from '../Buttons/TimerControls'
+import { DispatchLapsContext } from '../../providers/LapDataProvider'
+import { TimeDataContext, DispatchTimeContext } from '../../providers/TimeProvider'
 
-// TODO: Write tests for the timer controls
+const TIME_TO_TEST = {
+  isRunning: false,
+  elapsedTime: Math.random() * 100,
+}
 
-// 1. Render with no crashes: needs props to work
+// 1. Render with no crashes: needs context to work
 test('Component renders without crashing', () => {
-  let myControls = (
-    <TimerControls isRunning={true} handleTime={(a) => console.log(a)}></TimerControls>
+  const dispatchLapsContextValue = () => {}
+  const timeDataContextValue = TIME_TO_TEST
+  const dispatchTimeContextValue = () => {}
+
+  render(
+    <DispatchLapsContext.Provider value={dispatchLapsContextValue}>
+      <TimeDataContext.Provider value={timeDataContextValue}>
+        <DispatchTimeContext.Provider value={dispatchTimeContextValue}>
+          <TimerControls />
+        </DispatchTimeContext.Provider>
+      </TimeDataContext.Provider>
+    </DispatchLapsContext.Provider>,
   )
-  render(myControls)
 
   const testControls = screen.getByTestId('test-controls')
   expect(testControls).toBeInTheDocument()
 })
-
-// 2. Expected behavior when passing certain props
-
-// 3. Actions it takes depend on actions of the buttons inside -> how to test?

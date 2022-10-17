@@ -9,7 +9,7 @@
   overflow-y: auto;
   color: rgb(136, 136, 136, 0);
   scrollbar-gutter: both-edges stable;
-  transition: color 0.5s ease-out;
+  transition: color 0.8s ease-out;
   /* Firefox support */
   scrollbar-color: rgb(136, 136, 136, 1) var(--main-bg-color);
   scrollbar-width: thin;
