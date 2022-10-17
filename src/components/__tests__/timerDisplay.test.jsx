@@ -10,7 +10,7 @@ const TIME_TO_TEST = {
   elapsedTime: 0,
 }
 
-// 1. Render with no crashes: needs props to work
+// 1. Render with no crashes: needs context to work
 test('Component renders without crashing', () => {
   const timeDataContextValue = TIME_TO_TEST
 

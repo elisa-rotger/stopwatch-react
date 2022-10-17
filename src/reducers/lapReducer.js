@@ -1,7 +1,5 @@
 const ACTIONS = {
   ADD_LAP: 'add lap',
-  UPDATE_HIGHEST: 'update highest',
-  UPDATE_LOWEST: 'update lowest',
   RESET_LAPS: 'reset laps',
 }
 
@@ -14,26 +12,19 @@ const initialLapData = {
 }
 
 const reducerAllLaps = (state, action) => {
+  const newLap = {
+    id: state.lapId,
+    interval: action.payload.newTotalLapTime - state.lapTotalTime,
+  }
   switch (action.type) {
     case 'add lap':
       return {
-        allLaps: [action.payload.newLap, ...state.allLaps],
+        allLaps: [newLap, ...state.allLaps],
         lapTotalTime: action.payload.newTotalLapTime,
         lapId: state.lapId + 1,
-        highestLap: state.highestLap,
-        lowestLap: state.lowestLap,
-      }
-    case 'update highest':
-      return {
-        ...state,
-        allLaps: [...state.allLaps],
-        highestLap: action.payload.newLap,
-      }
-    case 'update lowest':
-      return {
-        ...state,
-        allLaps: [...state.allLaps],
-        lowestLap: action.payload.newLap,
+        highestLap:
+          newLap.interval > state.highestLap.interval ? newLap : state.highestLap,
+        lowestLap: newLap.interval < state.lowestLap.interval ? newLap : state.lowestLap,
       }
     case 'reset laps':
       return initialLapData
