@@ -32,7 +32,10 @@ const LapControls = memo(function LapControls() {
   }, [])
 
   return (
-    <section className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}>
+    <section
+      className={`lap-container ${isScrolling ? 'scrollbar-fade' : ''}`}
+      data-testid={'test-lapdisplay'}
+    >
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
           <RunningLap />

@@ -8,7 +8,7 @@ import { TimeDataContext, DispatchTimeContext } from '../../providers/TimeProvid
 
 const TIME_TO_TEST = {
   isRunning: false,
-  elapsedTime: 2000,
+  elapsedTime: Math.random() * 100,
 }
 
 // 1. Render with no crashes: needs context to work

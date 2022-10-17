@@ -21,11 +21,11 @@ function Main() {
   }
 
   return (
-    <>
+    <main className={'main-wrapper'} data-testid={'test-main'}>
       <TimerDisplay />
       <TimerControls handleLap={handleAddLap} />
       <LapsDisplay />
-    </>
+    </main>
   )
 }
 

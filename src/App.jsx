@@ -7,14 +7,14 @@ import TimeDataProvider from './providers/TimeProvider'
 function App() {
   return (
     <div className={'App'}>
-      <main className={'main-wrapper'}>
+      <div className={'outer-wrapper'}>
         <LapDataProvider>
           <TimeDataProvider>
             <Main />
             <Footer />
           </TimeDataProvider>
         </LapDataProvider>
-      </main>
+      </div>
     </div>
   )
 }
