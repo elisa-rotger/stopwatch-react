@@ -12,12 +12,12 @@ const initialLapData = {
 }
 
 const reducerAllLaps = (state, action) => {
+  const newLap = {
+    id: state.lapId,
+    interval: action.payload?.newTotalLapTime - state.lapTotalTime,
+  }
   switch (action.type) {
     case 'add lap':
-      const newLap = {
-        id: state.lapId,
-        interval: action.payload?.newTotalLapTime - state.lapTotalTime,
-      }
       return {
         allLaps: [newLap, ...state.allLaps],
         lapTotalTime: action.payload.newTotalLapTime,
