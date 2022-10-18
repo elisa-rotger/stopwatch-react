@@ -3,21 +3,21 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 import TimerDisplay from '../Timer/TimerDisplay'
-import { TimeDataContext } from '../../providers/TimeProvider'
+import { TimeContext, timer$ } from '../../providers/TimeObsProvider'
 
 const TIME_TO_TEST = {
-  isRunning: false,
-  elapsedTime: 0,
+  isPaused: false,
+  counter: 0,
 }
 
 // 1. Render with no crashes: needs context to work
 test('Component renders without crashing', () => {
-  const timeDataContextValue = TIME_TO_TEST
+  const time = TIME_TO_TEST
 
   render(
-    <TimeDataContext.Provider value={timeDataContextValue}>
+    <TimeContext.Provider value={{ timer$, time }}>
       <TimerDisplay />
-    </TimeDataContext.Provider>,
+    </TimeContext.Provider>,
   )
 
   const testDisplay = screen.getByTestId('test-display')

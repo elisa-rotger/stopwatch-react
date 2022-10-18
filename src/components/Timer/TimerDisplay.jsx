@@ -1,12 +1,12 @@
 import React from 'react'
 import { getFormattedTime } from '../../utils/formatting-utils'
-import { useTimeData } from '../../providers/TimeProvider'
+import { useTime } from '../../providers/TimeObsProvider'
 
 function TimerDisplay() {
-  const stateTime = useTimeData()
+  const { time } = useTime()
   return (
     <div id={'timer'} className={'crontab'} data-testid={'test-display'}>
-      <time>{getFormattedTime(stateTime.elapsedTime)}</time>
+      <time>{getFormattedTime(time.counter)}</time>
     </div>
   )
 }

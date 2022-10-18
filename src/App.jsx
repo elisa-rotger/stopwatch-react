@@ -2,18 +2,18 @@ import React from 'react'
 import LapDataProvider from './providers/LapDataProvider'
 import Main from './components/Main/Main'
 import Footer from './components/Footer/Footer'
-import TimeDataProvider from './providers/TimeProvider'
+import { TimeProvider } from './providers/TimeObsProvider'
 
 function App() {
   return (
     <div className={'App'}>
       <div className={'outer-wrapper'}>
-        <LapDataProvider>
-          <TimeDataProvider>
+        <TimeProvider>
+          <LapDataProvider>
             <Main />
             <Footer />
-          </TimeDataProvider>
-        </LapDataProvider>
+          </LapDataProvider>
+        </TimeProvider>
       </div>
     </div>
   )

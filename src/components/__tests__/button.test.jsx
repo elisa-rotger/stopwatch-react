@@ -9,7 +9,7 @@ import Button from '../Buttons/Button'
 test('Component renders without crashing', () => {
   let myButton = (
     <Button
-      isRunning={true}
+      isPaused={true}
       buttonStatus={{
         true: { innerText: 'Something to test true', className: 'active-reset' },
         false: { innerText: 'Trying to test false', className: 'active-reset' },
@@ -27,4 +27,4 @@ test('Component renders without crashing', () => {
 
 // 3. Test if prop structure is good
 
-// 4. Should change the value of isRunning when being clicked
+// 4. Should change the value of isPaused when being clicked
