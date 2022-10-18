@@ -1,10 +1,6 @@
 import React from 'react'
-import { useEffect } from 'react'
 
-import { timer$ } from '../../utils/observables'
-
-import { useTimeData, useTimeDispatch } from '../../providers/TimeProvider'
-import { ACTIONS as TIME_ACTIONS } from '../../reducers/timeReducer'
+import { useTime } from '../../providers/TimeObsProvider'
 
 import { useDispatchLaps } from '../../providers/LapDataProvider'
 import { ACTIONS as LAP_ACTIONS } from '../../reducers/lapReducer'
@@ -13,28 +9,17 @@ import Button from './Button'
 import './TimerControls.css'
 
 function TimerControls({ handleLap }) {
-  const stateTime = useTimeData()
-  const dispatchTime = useTimeDispatch()
+  const { timer$, time } = useTime()
   const dispatchLaps = useDispatchLaps()
 
-  useEffect(() => {
-    const subscription = timer$.subscribe((value) =>
-      dispatchTime({ type: TIME_ACTIONS.SET_ELAPSED_TIME, payload: value }),
-    )
-    return () => subscription.unsubscribe()
-  }, [dispatchTime])
-
   const startStop = () => {
-    /* timer needs the opposite of isRunning -> isPaused === !isRunning */
-    timer$.next({ isPaused: stateTime.isRunning })
-    dispatchTime({ type: TIME_ACTIONS.TOGGLE_TIMER })
+    timer$.next({ isPaused: !time.isPaused })
   }
 
   const lapReset = () => {
-    if (stateTime.isRunning) {
+    if (!time.isPaused) {
       handleLap()
     } else {
-      dispatchTime({ type: TIME_ACTIONS.RESET_TIMER })
       dispatchLaps({ type: LAP_ACTIONS.RESET_LAPS })
       timer$.next({ counter: 0 })
     }
@@ -45,13 +30,13 @@ function TimerControls({ handleLap }) {
       <div className={'button-wrapper'}>
         <Button
           id={'lap-reset'}
-          isRunning={stateTime.isRunning}
+          isPaused={time.isPaused}
           buttonStatus={{
-            true: { innerText: 'Lap', className: 'active-reset' },
-            false: { innerText: 'Reset', className: 'active-reset' },
+            true: { innerText: 'Reset', className: 'active-reset' },
+            false: { innerText: 'Lap', className: 'active-reset' },
           }}
           handleClick={lapReset}
-          disabled={!stateTime.isRunning && stateTime.elapsedTime === 0}
+          disabled={time.isPaused && time.counter === 0}
         />
       </div>
       <div className={'circle-wrapper'}>
@@ -61,10 +46,10 @@ function TimerControls({ handleLap }) {
       <div className={'button-wrapper'}>
         <Button
           id={'start-stop'}
-          isRunning={stateTime.isRunning}
+          isPaused={time.isPaused}
           buttonStatus={{
-            true: { innerText: 'Stop', className: 'active-stop' },
-            false: { innerText: 'Start', className: 'active-start' },
+            true: { innerText: 'Start', className: 'active-start' },
+            false: { innerText: 'Stop', className: 'active-stop' },
           }}
           handleClick={startStop}
           disabled={false}

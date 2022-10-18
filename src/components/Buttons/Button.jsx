@@ -2,17 +2,17 @@ import React from 'react'
 import './TimerControls.css'
 
 function Button(props) {
-  const { id, isRunning, buttonStatus, handleClick, disabled } = props
+  const { id, isPaused, buttonStatus, handleClick, disabled } = props
 
   return (
     <button
       data-testid={'test-button'}
       id={id}
-      className={buttonStatus[isRunning].className}
+      className={buttonStatus[isPaused].className}
       onClick={handleClick}
       disabled={disabled}
     >
-      {buttonStatus[isRunning].innerText}
+      {buttonStatus[isPaused].innerText}
     </button>
   )
 }

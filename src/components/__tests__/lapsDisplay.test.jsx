@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 
 import LapsDisplay from '../Laps/LapsDisplay'
 import { StateLapsContext } from '../../providers/LapDataProvider'
-import { TimeDataContext } from '../../providers/TimeProvider'
+import { TimeContext, timer$ } from '../../providers/TimeObsProvider'
 
 const LAPS_TO_TEST = {
   allLaps: [],
@@ -15,20 +15,20 @@ const LAPS_TO_TEST = {
 }
 
 const TIME_TO_TEST = {
-  isRunning: false,
-  elapsedTime: Math.random() * 100,
+  isPaused: false,
+  counter: Math.random() * 100,
 }
 
 // 1. Render with no crashes: needs context to work
 test('Component renders without crashing', () => {
   const stateLapsContextValue = LAPS_TO_TEST
-  const timeDataContextValue = TIME_TO_TEST
+  const time = TIME_TO_TEST
 
   render(
     <StateLapsContext.Provider value={stateLapsContextValue}>
-      <TimeDataContext.Provider value={timeDataContextValue}>
+      <TimeContext.Provider value={{ timer$, time }}>
         <LapsDisplay />
-      </TimeDataContext.Provider>
+      </TimeContext.Provider>
     </StateLapsContext.Provider>,
   )
 

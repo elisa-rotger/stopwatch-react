@@ -4,26 +4,23 @@ import '@testing-library/jest-dom'
 
 import TimerControls from '../Buttons/TimerControls'
 import { DispatchLapsContext } from '../../providers/LapDataProvider'
-import { TimeDataContext, DispatchTimeContext } from '../../providers/TimeProvider'
+import { TimeContext, timer$ } from '../../providers/TimeObsProvider'
 
 const TIME_TO_TEST = {
-  isRunning: false,
-  elapsedTime: Math.random() * 100,
+  isPaused: false,
+  counter: Math.random() * 100,
 }
 
 // 1. Render with no crashes: needs context to work
 test('Component renders without crashing', () => {
   const dispatchLapsContextValue = () => {}
-  const timeDataContextValue = TIME_TO_TEST
-  const dispatchTimeContextValue = () => {}
+  const time = TIME_TO_TEST
 
   render(
     <DispatchLapsContext.Provider value={dispatchLapsContextValue}>
-      <TimeDataContext.Provider value={timeDataContextValue}>
-        <DispatchTimeContext.Provider value={dispatchTimeContextValue}>
-          <TimerControls />
-        </DispatchTimeContext.Provider>
-      </TimeDataContext.Provider>
+      <TimeContext.Provider value={{ timer$, time }}>
+        <TimerControls />
+      </TimeContext.Provider>
     </DispatchLapsContext.Provider>,
   )
 

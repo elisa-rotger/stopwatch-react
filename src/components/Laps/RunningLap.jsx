@@ -1,18 +1,18 @@
 import React from 'react'
 import { useLapsData } from '../../providers/LapDataProvider'
-import { useTimeData } from '../../providers/TimeProvider'
 import { getFormattedTime } from '../../utils/formatting-utils'
+import { useTime } from '../../providers/TimeObsProvider'
 
 function RunningLap() {
   const stateLaps = useLapsData()
-  const stateTime = useTimeData()
+  const { time } = useTime()
 
   return (
     <>
-      {stateTime.elapsedTime > 0 && (
+      {time.counter > 0 && (
         <tr className={'lap'}>
           <td>{`Lap ${stateLaps.allLaps.length + 1}`}</td>
-          <td>{getFormattedTime(stateTime.elapsedTime - stateLaps.lapTotalTime)}</td>
+          <td>{getFormattedTime(time.counter - stateLaps.lapTotalTime)}</td>
         </tr>
       )}
     </>
