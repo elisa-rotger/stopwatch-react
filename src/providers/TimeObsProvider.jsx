@@ -1,4 +1,4 @@
-import { Subject, interval, NEVER, BehaviorSubject } from 'rxjs'
+import { Subject, interval, BehaviorSubject } from 'rxjs'
 import { switchMap, startWith, scan, map } from 'rxjs/operators'
 
 import { useContext, createContext } from 'react'
