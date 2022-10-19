@@ -1,27 +1,42 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
+import { interval, state, useStateObservable } from '@react-rxjs/core'
+import { useObservableState } from 'observable-hooks'
+import { bind } from '@react-rxjs/core'
 
-import { useTime } from '../../providers/TimeObsProvider'
+import { useTime, dataService } from '../../providers/TimeObsProvider'
 
 import { useDispatchLaps } from '../../providers/LapDataProvider'
 import { ACTIONS as LAP_ACTIONS } from '../../reducers/lapReducer'
 
 import Button from './Button'
 import './TimerControls.css'
+import { useEffect } from 'react'
+
+const [useTimer, timer$] = bind(dataService.getObservable(), {
+  isPaused: true,
+  counter: 0,
+})
 
 function TimerControls({ handleLap }) {
-  const { timer$, time } = useTime()
+  // const { timer$, time } = useTime()
   const dispatchLaps = useDispatchLaps()
+  // const [buttonClick$, pressButton] = createSignal()
+
+  const totalTime = useTimer()
 
   const startStop = () => {
-    timer$.next({ isPaused: !time.isPaused })
+    dataService.setPause(!totalTime.isPaused)
   }
 
   const lapReset = () => {
-    if (!time.isPaused) {
-      handleLap()
+    if (!totalTime.isPaused) {
+      dispatchLaps({
+        type: LAP_ACTIONS.ADD_LAP,
+        payload: { newTotalLapTime: totalTime.counter },
+      })
     } else {
       dispatchLaps({ type: LAP_ACTIONS.RESET_LAPS })
-      timer$.next({ counter: 0 })
+      dataService.setReset(0)
     }
   }
 
@@ -30,13 +45,13 @@ function TimerControls({ handleLap }) {
       <div className={'button-wrapper'}>
         <Button
           id={'lap-reset'}
-          isPaused={time.isPaused}
+          isPaused={totalTime.isPaused}
           buttonStatus={{
             true: { innerText: 'Reset', className: 'active-reset' },
             false: { innerText: 'Lap', className: 'active-reset' },
           }}
           handleClick={lapReset}
-          disabled={time.isPaused && time.counter === 0}
+          disabled={totalTime.isPaused && totalTime.counter === 0}
         />
       </div>
       <div className={'circle-wrapper'}>
@@ -46,7 +61,7 @@ function TimerControls({ handleLap }) {
       <div className={'button-wrapper'}>
         <Button
           id={'start-stop'}
-          isPaused={time.isPaused}
+          isPaused={totalTime.isPaused}
           buttonStatus={{
             true: { innerText: 'Start', className: 'active-start' },
             false: { innerText: 'Stop', className: 'active-stop' },

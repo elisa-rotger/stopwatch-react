@@ -22,6 +22,13 @@ export const timer$ = new Subject().pipe(
   ),
 )
 
+export const dataService = {
+  setPause: (isPaused) => timer$.next({ isPaused: isPaused }),
+  setReset: (counter) => timer$.next({ counter: counter }),
+  getObservable: () => timer$.asObservable(),
+}
+
+/*  */
 export const TimeContext = createContext()
 
 export const useTime = () => useContext(TimeContext)
