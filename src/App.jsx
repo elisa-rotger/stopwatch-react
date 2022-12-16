@@ -2,7 +2,7 @@ import React from 'react'
 import LapDataProvider from './providers/LapDataProvider'
 import Main from './components/Main/Main'
 import Footer from './components/Footer/Footer'
-import { TimeProvider } from './providers/TimeObsProvider'
+import Header from './components/Header/Header'
 
 function App() {
   return (
