@@ -8,12 +8,11 @@ function App() {
   return (
     <div className={'App'}>
       <div className={'outer-wrapper'}>
-        <TimeProvider>
-          <LapDataProvider>
-            <Main />
-            <Footer />
-          </LapDataProvider>
-        </TimeProvider>
+        <LapDataProvider>
+          <Header />
+          <Main />
+          <Footer />
+        </LapDataProvider>
       </div>
     </div>
   )
