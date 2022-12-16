@@ -10,13 +10,13 @@ import RunningLap from './RunningLap'
 import './LapsDisplay.css'
 
 const LapControls = memo(function LapControls() {
-  const stateLaps = useLapsData()
+  const timeState = useLapsData()
 
   const [isScrolling, setIsScrolling] = useState(false)
 
   const getClassName = (id) => {
-    if (stateLaps.allLaps.length > 1 && stateLaps.highestLap.id === id) return 'highest'
-    if (stateLaps.allLaps.length > 1 && stateLaps.lowestLap.id === id) return 'lowest'
+    if (timeState.allLaps.length > 1 && timeState.highestLap.id === id) return 'highest'
+    if (timeState.allLaps.length > 1 && timeState.lowestLap.id === id) return 'lowest'
     return ''
   }
 
@@ -39,13 +39,13 @@ const LapControls = memo(function LapControls() {
       <table className={'lap-table'}>
         <tbody id={'lap-list'}>
           <RunningLap />
-          {stateLaps.allLaps.map((lap) => (
+          {timeState.allLaps.map((lap) => (
             <tr key={lap.id} className={`lap ${getClassName(lap.id)}`}>
               <td>{`Lap ${lap.id}`}</td>
               <td>{getFormattedTime(lap.interval)}</td>
             </tr>
           ))}
-          <EmptyLaps numOfLaps={6 - stateLaps.allLaps.length} />
+          <EmptyLaps numOfLaps={5 - timeState.allLaps.length} />
         </tbody>
       </table>
     </section>

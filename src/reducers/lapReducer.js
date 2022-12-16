@@ -1,32 +1,35 @@
-const ACTIONS = {
-  ADD_LAP: 'add lap',
-  RESET_LAPS: 'reset laps',
-}
+import { ACTIONS } from '../utils/formatting-utils'
 
 const initialLapData = {
-  allLaps: [],
+  totalTime: 0,
   lapTotalTime: 0,
-  lapId: 1,
+  allLaps: [],
   highestLap: { id: undefined, interval: 0 },
   lowestLap: { id: undefined, interval: Infinity },
 }
 
 const reducerAllLaps = (state, action) => {
+  const { type, payload } = action
   const newLap = {
-    id: state.lapId,
-    interval: action.payload?.newTotalLapTime - state.lapTotalTime,
+    id: state.allLaps.length + 1,
+    interval: payload - state.lapTotalTime,
   }
-  switch (action.type) {
-    case 'add lap':
+  switch (type) {
+    case ACTIONS.Increment:
       return {
+        ...state,
+        totalTime: payload,
+      }
+    case ACTIONS.AddLap:
+      return {
+        ...state,
+        lapTotalTime: payload,
         allLaps: [newLap, ...state.allLaps],
-        lapTotalTime: action.payload.newTotalLapTime,
-        lapId: state.lapId + 1,
         highestLap:
           newLap.interval > state.highestLap.interval ? newLap : state.highestLap,
         lowestLap: newLap.interval < state.lowestLap.interval ? newLap : state.lowestLap,
       }
-    case 'reset laps':
+    case ACTIONS.Reset:
       return initialLapData
     default:
       throw new Error('wrong action type')
