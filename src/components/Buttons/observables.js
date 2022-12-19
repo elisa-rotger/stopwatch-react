@@ -26,7 +26,10 @@ const [useTimer, timer$] = bind(
         : lapResetClick$.pipe(map(() => ({ type: ACTIONS.Reset, value: 0 }))),
     ),
     scan(
-      (acc, current) => ({ type: current.type, value: acc.value + 1 }),
+      (acc, current) => ({
+        type: current.type,
+        value: current.type === ACTIONS.Reset ? 0 : acc.value + 1,
+      }),
       initialCounterState,
     ),
   ),
