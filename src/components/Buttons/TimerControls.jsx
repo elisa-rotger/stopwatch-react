@@ -19,6 +19,8 @@ function TimerControls() {
     dispatchLaps({ type: timer.type, payload: timer.value })
   }, [timer])
 
+  // test
+
   return (
     <section className={'buttons-container'} data-testid={'test-controls'}>
       <div className={'button-wrapper'}>
